@@ -1,5 +1,7 @@
 // All the objects that need to be accessible from everywhere
 let lama;
+let foodsArray = [];
+let tickCounter = 0;
 
 // Initialization function triggered on the loading 
 // of the page
@@ -23,7 +25,7 @@ window.onload = function() {
 
     // Create the Lama Object 
     lama = new Lama({app});
-
+ 
     app.ticker.add(gameLoop);
 }
 
@@ -39,5 +41,13 @@ function doneLoading(){
 
 function gameLoop(){
     lama.update();
+    for(let i=0; i < foodsArray.length ; i++){
+        foodsArray[i].update();
+    }
+    tickCounter++;
+    if(tickCounter % 100 == 0){
+        let food = new Food({app});
+        foodsArray.push(food);
+    }
 
 }
