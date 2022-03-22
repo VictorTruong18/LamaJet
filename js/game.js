@@ -5,8 +5,8 @@ let tickCounter = 0;
 
 // Initialization function triggered on the loading 
 // of the page
-window.onload = function() {
-    app = new PIXI.Application (
+window.onload = function () {
+    app = new PIXI.Application(
         {
             width: 480,
             height: 640,
@@ -19,35 +19,35 @@ window.onload = function() {
     app.stage.interactive = true;
     document.querySelector("#gameDiv").addEventListener("pointerdown", clickHandler);
 
+    app.loader.add("character", "images/lama-sprite.png");
     // Loading of the app
     // Triggers the function doneLoading at finish
     app.loader.load(doneLoading);
 
     // Create the Lama Object 
-    lama = new Lama({app});
- 
+    lama = new Lama({ app });
+
     app.ticker.add(gameLoop);
 }
 
-function clickHandler(){
+function clickHandler() {
     lama.lift();
 }
 
 
 // Starts the gameLoop
-function doneLoading(){
+function doneLoading() {
     app.ticker.add(gameLoop);
 }
 
-function gameLoop(){
+function gameLoop() {
     lama.update();
-    for(let i=0; i < foodsArray.length ; i++){
+    for (let i = 0; i < foodsArray.length; i++) {
         foodsArray[i].update();
     }
     tickCounter++;
-    if(tickCounter % 100 == 0){
-        let food = new Food({app});
+    if (tickCounter % 100 == 0) {
+        let food = new Food({ app });
         foodsArray.push(food);
     }
-
 }
