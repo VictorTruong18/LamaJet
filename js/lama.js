@@ -13,6 +13,7 @@ class Lama {
         // Load the Pixi object
         this.app = app;
         const ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['character'].url);
+        
         const w = 48;
         const h = 48;
 
@@ -29,7 +30,8 @@ class Lama {
 
         this.lama = new PIXI.AnimatedSprite(playerSheet.walk);
         this.lama.animationSpeed = .5;
-        this.lama.anchor.set(0.5);
+        this.lama.weight = w*2;
+        this.lama.height = h*2;
         this.lama.x = lamaOrginX;
         this.lama.y = lamaOrginY;
         this.lama.gravity = orginGravity;

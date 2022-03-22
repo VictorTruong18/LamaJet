@@ -10,15 +10,15 @@ class Food {
         this.app = app;
         const food = foodType[Math.floor(Math.random() * foodType.length)];
         if (food == "FRUIT") {
-            this.food = new PIXI.Sprite.from("../images/fruit.png");
+            this.food = new PIXI.Sprite.from("../images/ananas.png");
         }
         if (food == "JUNK") {
-            this.food = new PIXI.Sprite.from("../images/junk.png");
+            this.food = new PIXI.Sprite.from("../images/donut.png");
         }
         this.food.x = foodOrginX;
         this.food.y = Math.floor(Math.random() * 640);
-        this.food.width = 30;
-        this.food.height = 30;
+        this.food.width = 50;
+        this.food.height = 50;
         this.food.type = food;
         this.food.hasBeenCollided = false;
         app.stage.addChild(this.food);

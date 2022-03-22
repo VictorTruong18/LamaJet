@@ -62,11 +62,17 @@ function gameLoop() {
                 if (!foodsArray[i].food.hasBeenCollided) {
                     foodsArray[i].food.hasBeenCollided = true;
                     lama.lama.lift += .1;
+                } else {
+                    foodsArray[i].food.weight = 0;
+                    foodsArray[i].food.height = 0;
                 }
             } else {
                 if (!foodsArray[i].food.hasBeenCollided) {
                     foodsArray[i].food.hasBeenCollided = true;
                     lama.lama.lift -= .1;
+                }else {
+                    foodsArray[i].food.weight = 0;
+                    foodsArray[i].food.height = 0;
                 }
             }
         }
