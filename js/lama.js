@@ -39,7 +39,11 @@ class Lama {
         app.stage.addChild(this.lama);
     }
 
-    update() {
+    bounds() {
+        return this.lama.getBounds();
+    }
+    
+    update(){
         this.lama.velocity += this.lama.gravity;
         this.lama.y += this.lama.velocity;
         if (this.lama.y > 540) {
