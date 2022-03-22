@@ -6,18 +6,21 @@ const foodSpeed = 1;
 
 
 class Food {
-    constructor({app}) {
+    constructor({ app }) {
         this.app = app;
         const food = foodType[Math.floor(Math.random() * foodType.length)];
-        if(food == "FRUIT"){
+        if (food == "FRUIT") {
             this.food = new PIXI.Sprite.from("../images/fruit.png");
         }
-        if(food == "JUNK"){
+        if (food == "JUNK") {
             this.food = new PIXI.Sprite.from("../images/junk.png");
         }
         this.food.x = foodOrginX;
-        this.food.y = Math.floor(Math.random() * 640)
+        this.food.y = Math.floor(Math.random() * 640);
+        this.food.width = 30;
+        this.food.height = 30;
         this.food.type = food;
+        this.food.hasBeenCollided = false;
         app.stage.addChild(this.food);
     }
 
@@ -25,7 +28,7 @@ class Food {
         return this.food.getBounds();
     }
 
-    update(){
-        this.food.x -= foodSpeed ;
+    update() {
+        this.food.x -= foodSpeed;
     }
 }

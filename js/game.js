@@ -41,23 +41,34 @@ function doneLoading() {
 }
 
 
-function isColliding(a,b){
+function isColliding(a, b) {
     let aBox = a.bounds();
     let bBox = b.bounds();
 
     return aBox.x + aBox.width > bBox.x &&
-                   aBox.x < bBox.x + bBox.width &&
-                   aBox.y + aBox.height > bBox.y &&
-                   aBox.y < bBox.y + bBox.height;
+        aBox.x < bBox.x + bBox.width &&
+        aBox.y + aBox.height > bBox.y &&
+        aBox.y < bBox.y + bBox.height;
 }
 
-function gameLoop(){
+function gameLoop() {
     lama.update();
+    console.log(lama.lama.lift);
     for (let i = 0; i < foodsArray.length; i++) {
         foodsArray[i].update();
         //THERE IS COLLISION
-        if(isColliding(foodsArray[i],lama)){
-           
+        if (isColliding(foodsArray[i], lama)) {
+            if (foodsArray[i].food.type === 'FRUIT') {
+                if (!foodsArray[i].food.hasBeenCollided) {
+                    foodsArray[i].food.hasBeenCollided = true;
+                    lama.lama.lift += .1;
+                }
+            } else {
+                if (!foodsArray[i].food.hasBeenCollided) {
+                    foodsArray[i].food.hasBeenCollided = true;
+                    lama.lama.lift -= .1;
+                }
+            }
         }
     }
     tickCounter++;
