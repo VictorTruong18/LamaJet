@@ -39,15 +39,31 @@ function doneLoading(){
     app.ticker.add(gameLoop);
 }
 
+function isColliding(a,b){
+    let aBox = a.bounds();
+    let bBox = b.bounds();
+
+    return aBox.x + aBox.width > bBox.x &&
+                   aBox.x < bBox.x + bBox.width &&
+                   aBox.y + aBox.height > bBox.y &&
+                   aBox.y < bBox.y + bBox.height;
+}
+
 function gameLoop(){
     lama.update();
     for(let i=0; i < foodsArray.length ; i++){
         foodsArray[i].update();
+        //THERE IS COLLISION
+        if(isColliding(foodsArray[i],lama)){
+           
+        }
     }
     tickCounter++;
     if(tickCounter % 100 == 0){
         let food = new Food({app});
         foodsArray.push(food);
     }
+
+    
 
 }

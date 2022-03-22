@@ -21,6 +21,10 @@ class Food {
         app.stage.addChild(this.food);
     }
 
+    bounds() {
+        return this.food.getBounds();
+    }
+
     update(){
         this.food.x -= foodSpeed ;
     }

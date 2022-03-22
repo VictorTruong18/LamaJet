@@ -21,6 +21,10 @@ class Lama {
         this.lama.lift = lift;
         app.stage.addChild(this.lama);
     }
+
+    bounds() {
+        return this.lama.getBounds();
+    }
     
     update(){
         this.lama.velocity += this.lama.gravity;
