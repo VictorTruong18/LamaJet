@@ -8,18 +8,19 @@ let birds = [];
 window.onload = function () {
     app = new PIXI.Application(
         {
-            width: 480,
-            height: 640,
+            width: window.innerWidth  > window.innerWidth / 2 ? window.innerHeight / 2 : window.innerWidth,
+            height: window.innerHeight,
             backgroundColor: 0xAAAAA
         }
     );
+    app.renderer.view.style.position = 'absolute';
     document.body.appendChild(app.view);
 
-    document.querySelector("#gameDiv").appendChild(app.view);
+    document.querySelector("#container-canvas").appendChild(app.view);
     app.stage.interactive = true;
-    document.querySelector("#gameDiv").addEventListener("pointerdown", clickHandler);
+    document.querySelector("#container-canvas").addEventListener("pointerdown", clickHandler);
 
-    app.loader.add("character", "images/lama-sprite.png");
+    app.loader.add("character", "images/lama_sprite.png");
     app.loader.add("enemy","images/bird-sprite.png");
     // Loading of the app
     // Triggers the function doneLoading at finish
@@ -29,6 +30,9 @@ window.onload = function () {
     lama = new Lama({ app });
 
     app.ticker.add(gameLoop);
+
+    const container = new PIXI.Container();
+    app.stage.addChild(container);
 }
 
 function clickHandler() {
@@ -53,42 +57,16 @@ function isColliding(a, b) {
 }
 
 function gameLoop() {
+    app.width = window.innerWidth;
+    app.height = window.innerHeight;
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+
     lama.update();
-
-    // // for (let i = 0; i < foodsArray.length; i++) {
-    // //     // foodsArray[i].update();
-    // //     // //THERE IS COLLISION
-    // //     // if (isColliding(foodsArray[i], lama)) {
-    // //     //     if (foodsArray[i].food.type === 'FRUIT') {
-    // //     //         if (!foodsArray[i].food.hasBeenCollided) {
-    // //     //             foodsArray[i].food.hasBeenCollided = true;
-    // //     //             lama.lama.lift += .1;
-    // //     //         } else {
-    // //     //             foodsArray[i].food.weight = 0;
-    // //     //             foodsArray[i].food.height = 0;
-    // //     //         }
-    // //     //     } else {
-    // //     //         if (!foodsArray[i].food.hasBeenCollided) {
-    // //     //             foodsArray[i].food.hasBeenCollided = true;
-    // //     //             lama.lama.lift -= .1;
-    // //     //         }else {
-    // //     //             foodsArray[i].food.weight = 0;
-    // //     //             foodsArray[i].food.height = 0;
-    // //     //         }
-    // //     //     }
-    // //     // }
-    // // }
-    // tickCounter++;
-    // // if (tickCounter % 100 == 0) {
-    // //     let food = new Food({ app });
-    // //     foodsArray.push(food);
-    // // }
-
     for(let i =0; i < birds.length; i++){
         birds[i].update();
 
     }
-
+    
     tickCounter++;
 
     if(tickCounter % 100 == 0){
