@@ -1,7 +1,7 @@
 // All the objects that need to be accessible from everywhere
 let lama;
-let foodsArray = [];
 let tickCounter = 0;
+let birds = [];
 
 // Initialization function triggered on the loading 
 // of the page
@@ -20,6 +20,7 @@ window.onload = function () {
     document.querySelector("#gameDiv").addEventListener("pointerdown", clickHandler);
 
     app.loader.add("character", "images/lama-sprite.png");
+    app.loader.add("enemy","images/bird-sprite.png");
     // Loading of the app
     // Triggers the function doneLoading at finish
     app.loader.load(doneLoading);
@@ -53,33 +54,45 @@ function isColliding(a, b) {
 
 function gameLoop() {
     lama.update();
-    console.log(lama.lama.lift);
-    for (let i = 0; i < foodsArray.length; i++) {
-        foodsArray[i].update();
-        //THERE IS COLLISION
-        if (isColliding(foodsArray[i], lama)) {
-            if (foodsArray[i].food.type === 'FRUIT') {
-                if (!foodsArray[i].food.hasBeenCollided) {
-                    foodsArray[i].food.hasBeenCollided = true;
-                    lama.lama.lift += .1;
-                } else {
-                    foodsArray[i].food.weight = 0;
-                    foodsArray[i].food.height = 0;
-                }
-            } else {
-                if (!foodsArray[i].food.hasBeenCollided) {
-                    foodsArray[i].food.hasBeenCollided = true;
-                    lama.lama.lift -= .1;
-                }else {
-                    foodsArray[i].food.weight = 0;
-                    foodsArray[i].food.height = 0;
-                }
-            }
-        }
+
+    // // for (let i = 0; i < foodsArray.length; i++) {
+    // //     // foodsArray[i].update();
+    // //     // //THERE IS COLLISION
+    // //     // if (isColliding(foodsArray[i], lama)) {
+    // //     //     if (foodsArray[i].food.type === 'FRUIT') {
+    // //     //         if (!foodsArray[i].food.hasBeenCollided) {
+    // //     //             foodsArray[i].food.hasBeenCollided = true;
+    // //     //             lama.lama.lift += .1;
+    // //     //         } else {
+    // //     //             foodsArray[i].food.weight = 0;
+    // //     //             foodsArray[i].food.height = 0;
+    // //     //         }
+    // //     //     } else {
+    // //     //         if (!foodsArray[i].food.hasBeenCollided) {
+    // //     //             foodsArray[i].food.hasBeenCollided = true;
+    // //     //             lama.lama.lift -= .1;
+    // //     //         }else {
+    // //     //             foodsArray[i].food.weight = 0;
+    // //     //             foodsArray[i].food.height = 0;
+    // //     //         }
+    // //     //     }
+    // //     // }
+    // // }
+    // tickCounter++;
+    // // if (tickCounter % 100 == 0) {
+    // //     let food = new Food({ app });
+    // //     foodsArray.push(food);
+    // // }
+
+    for(let i =0; i < birds.length; i++){
+        birds[i].update();
+
     }
+
     tickCounter++;
-    if (tickCounter % 100 == 0) {
-        let food = new Food({ app });
-        foodsArray.push(food);
-    }
+
+    if(tickCounter % 100 == 0){
+        let bird = new Bird({app});
+        birds.push(bird);
+    } 
 }
