@@ -9,7 +9,8 @@ let bgX = 0;
 let bgSpeed = -1;
 let basicText;
 let score = 0;
-
+let hasGameStarted = false;
+let gameStartText;
 
 // Initialization function triggered on the loading 
 // of the page
@@ -48,6 +49,11 @@ window.onload = function () {
 }
 
 function clickHandler() {
+    if (!hasGameStarted) {
+        hasGameStarted = true;
+        gameStartText.destroy();
+        console.log('Game has started');
+    }
     lama.lift();
 }
 
@@ -59,6 +65,11 @@ function doneLoading() {
     bgFront = createBg(app.loader.resources["bgFront"].texture);
     // Create the Lama Object 
     lama = new Lama({ app });
+
+    gameStartText = new PIXI.Text("CLICK TO PLAY!", { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
+    gameStartText.x = (window.innerWidth - gameStartText.width) / 2
+    gameStartText.y = window.innerHeight / 2;
+    app.stage.addChild(gameStartText);
     basicText = new PIXI.Text(score);
     basicText.x = window.innerWidth / 2;
     basicText.y = window.innerHeight * 0.10;
@@ -90,7 +101,7 @@ function gameLoop() {
 
     for (let i = 0; i < birds.length; i++) {
         birds[i].update();
-        if (isColliding(birds[i], lama)) {
+        if (isColliding(birds[i], lama) && score !== 0) {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 lama.lama.lift += .1;
@@ -102,7 +113,7 @@ function gameLoop() {
 
     tickCounter++;
 
-    if (tickCounter % 100 == 0) {
+    if (tickCounter % 100 == 0 && hasGameStarted) {
         let bird = new Bird({ app });
         birds.push(bird);
     }

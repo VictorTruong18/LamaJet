@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,25 +8,40 @@
     <script src="js/pixi.min.js"></script>
     <script src="js/lama.js"></script>
     <script src="js/bird.js"></script>
-    <script src="js/game.js"> </script> 
+    <script src="js/game.js"> </script>
     <style>
+        @font-face {
+            font-family: 'Berlin Sans FB';
+            src: url('fonts/Berlin\ Sans\ FB.eot');
+            src: url('fonts/Berlin\ Sans\ FB.eot?#iefix') format('embedded-opentype'),
+                url('fonts/Berlin\ Sans\ FB.woff2') format('woff2'),
+                url('fonts/Berlin\ Sans\ FB.woff') format('woff'),
+                url('fonts/Berlin\ Sans\ FB.svg#Berlin Sans FB') format('svg');
+            font-weight: 400;
+            font-style: normal;
+            font-stretch: normal;
+            unicode-range: U+0020-2074;
+        }
+
         * {
             padding: 0;
             margin: 0;
         }
+
         #container-canvas {
             margin: 0 auto;
             display: flex;
             justify-content: center;
             overflow: hidden;
         }
-
     </style>
 </head>
+
 <body>
     <div id="gameDiv">
         <div id="container-canvas">
         </div>
     </div>
 </body>
+
 </html>
