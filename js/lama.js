@@ -36,7 +36,27 @@ class Lama {
             new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, h, w, h)),
         ];
 
-        this.lama = new PIXI.AnimatedSprite(playerSheet.walk);
+        playerSheet["fly_hat"] = [
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 2*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 2*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 2*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 2*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 2*h, w, h)),
+        ];
+
+        playerSheet["fall_hat"] = [
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 3*h, w, h)),
+        ];
+
+        playerSheet["walk_hat"] = [
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 3*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 3*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 3*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 3*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 3*h, w, h)),
+        ];
+
+        this.lama = new PIXI.AnimatedSprite(playerSheet.fall_hat);
         this.lama.anchor.set(0.5);
         this.lama.animationSpeed = .1;
 
@@ -64,6 +84,10 @@ class Lama {
         if (this.lama.y < 0) {
             this.lama.y = 0;
             this.lama.velocity = 0;
+        }
+    
+        for(var i = 0; i < caps.length ; i++){
+            caps[i].update(this.lama.x, this.lama.y,i);
         }
     }
 

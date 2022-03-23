@@ -9,7 +9,7 @@ let bgX = 0;
 let bgSpeed = -1;
 let basicText;
 let score = 0;
-
+let caps = [];
 
 // Initialization function triggered on the loading 
 // of the page
@@ -59,6 +59,14 @@ function doneLoading() {
     bgFront = createBg(app.loader.resources["bgFront"].texture);
     // Create the Lama Object 
     lama = new Lama({ app });
+    let cap = new CapWearable(app, lama.lama.x, lama.lama.y);
+    let cap2 = new CapWearable(app, lama.lama.x, lama.lama.y);
+    let cap3 = new CapWearable(app, lama.lama.x, lama.lama.y);
+    let cap4 = new CapWearable(app, lama.lama.x, lama.lama.y);
+    caps.push(cap);
+    caps.push(cap2);
+    caps.push(cap3);
+    caps.push(cap4);
     basicText = new PIXI.Text(score);
     basicText.x = window.innerWidth / 2;
     basicText.y = window.innerHeight * 0.10;
