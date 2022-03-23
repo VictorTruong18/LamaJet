@@ -8,7 +8,7 @@ const originVelocity = 0;
 const lift = 3;
 const playerSheet = {};
 
-        
+
 
 // Main playable character
 class Lama {
@@ -16,7 +16,7 @@ class Lama {
         // Load the Pixi object
         this.app = app;
         const ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['character'].url);
-        
+
         const w = 80;
         const h = 80;
 
@@ -52,12 +52,12 @@ class Lama {
     bounds() {
         return this.lama.getBounds();
     }
-    
-    update(){
+
+    update() {
         this.lama.velocity += this.lama.gravity;
         this.lama.y += this.lama.velocity;
-        if (this.lama.y > 540) {
-            this.lama.y = 540;
+        if (this.lama.y > 620) {
+            this.lama.y = 620;
             this.lama.velocity = 0;
         }
 

@@ -18,7 +18,7 @@ window.onload = function () {
         {
             width: window.innerWidth,
             height: window.innerHeight,
-            backgroundColor: 0xAAAAA
+            backgroundColor: 0x9AC1E7
         }
     );
     app.renderer.view.style.position = 'absolute';
@@ -31,9 +31,11 @@ window.onload = function () {
     app.loader.baseUrl = "images";
     app.loader.add("character", "lama_sprite.png");
     app.loader.add("enemy", "bird-sprite.png");
-    app.loader.add("bgBack", "sky.png");
-    app.loader.add("bgMiddle", "clouds.png");
-    app.loader.add("bgFront", "rocks.png");
+    app.loader.add("bgBack", "clouds-sprite.png");
+    app.loader.add("bgMiddle", "front-rocks-sprite.png");
+    app.loader.add("bgFront", "back-rocks-sprite.png");
+    app.loader.add("grass", "grass-sprite.png");
+
 
     // Loading of the app
     // Triggers the function doneLoading at finish
@@ -57,6 +59,7 @@ function doneLoading() {
     bgBack = createBg(app.loader.resources["bgBack"].texture);
     bgMiddle = createBg(app.loader.resources["bgMiddle"].texture);
     bgFront = createBg(app.loader.resources["bgFront"].texture);
+    grass = createBg(app.loader.resources["grass"].texture);
     // Create the Lama Object 
     lama = new Lama({ app });
     basicText = new PIXI.Text(score);
@@ -93,7 +96,7 @@ function gameLoop() {
         if (isColliding(birds[i], lama)) {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
-                lama.lama.lift += .1;
+                lama.lama.lift -= .1;
                 score += 1;
                 basicText.text = score;
             }
