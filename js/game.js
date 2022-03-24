@@ -133,6 +133,7 @@ function doneLoading() {
 
 
 function isColliding(a, b) {
+    if (!a || !b) { return false; }
     let aBox = a.bounds();
     let bBox = b.bounds();
 
@@ -175,7 +176,7 @@ function gameLoop() {
 
     resizeScreen();
 
-    lama.update();
+    if (lama) { lama.update(); }
 
 
 
@@ -228,8 +229,10 @@ function createBg(texture) {
 }
 
 function updateBackground() {
-    bgX = (bgX + bgSpeed);
-    bgFront.tilePosition.x = bgX;
-    bgMiddle.tilePosition.x = bgX / 2;
-    bgBack.tilePosition.x = bgX / 4;
+    if (bgFront && bgMiddle && bgBack) {
+        bgX = (bgX + bgSpeed);
+        bgFront.tilePosition.x = bgX;
+        bgMiddle.tilePosition.x = bgX / 2;
+        bgBack.tilePosition.x = bgX / 4;
+    }
 }
