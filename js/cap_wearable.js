@@ -20,11 +20,22 @@ class CapWearable {
         this.capWearable.y = y-30;
         this.capWearable.height = 30;
         this.capWearable.width =  33;
+        this.capWearable.hasPopped = false;
+        this.capWearable.gravity = orginGravity;
+        this.capWearable.velocity = originVelocity;
+        this.capWearable.lift = lift;
         app.stage.addChild(this.capWearable);
     }
 
     update(x,y,indice){
-        this.capWearable.x = x+5;
-        this.capWearable.y = y-43-(indice*8);
+        if(!this.capWearable.hasPopped){
+            this.capWearable.x = x+5;
+            this.capWearable.y = y-43-(indice*8);
+        }
+        
+    }
+
+    bounds() {
+        return this.capWearable.getBounds();
     }
 }

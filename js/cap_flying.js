@@ -22,7 +22,8 @@ class CapFlying {
         const w = 80;
         const h = 80;
 
-        const flyingCapSheet = {};
+        const flyingCapSheet = {}; 
+        
 
         flyingCapSheet["fly"] = [
             new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 0, w, h)),

@@ -1,5 +1,5 @@
 // All the objects that need to be accessible from everywhere
-const SCORE_GOAL = 1;
+const SCORE_GOAL = 10;
 const DOWNLOAD_URL = "https://en.wikipedia.org/wiki/Llama";
 const CREDITS_URL = "https://epita.fr";
 let lama;
@@ -220,37 +220,55 @@ function gameLoop() {
 
     if (lama) { lama.update(); }
 
-
-
-    for (let i = 0; i < birds.length; i++) {
-        birds[i].update();
-        if (isColliding(birds[i], lama) && score > 0 && !hasGameEnded) {
-            if (!birds[i].bird.hasCollided) {
-                birds[i].bird.hasCollided = true;
-                score -= 1;
-                scoreText.text = score;
-            }
+    let counter = 0;
+    for(let i = 0; i < caps.length; i++){
+        if(!caps[i].capWearable.hasPopped){
+            counter++;
         }
     }
-
+    if (score === SCORE_GOAL) {
+        hasGameEnded = true;
+        displayEndScreen();
+    }
+    score = counter;
+    scoreText.text = score;
     for (let i = 0; i < flyingCaps.length; i++) {
         flyingCaps[i].update();
         if (isColliding(flyingCaps[i], lama) && !hasGameEnded) {
             if (!flyingCaps[i].flyingCap.hasCollided) {
                 flyingCaps[i].flyingCap.hasCollided = true;
                 flyingCaps[i].flyingCap.x = null;
-                flyingCaps[i].flyingCap.y = null;
-                score += 1;
-                scoreText.text = score;
-                if (score === SCORE_GOAL) {
-                    hasGameEnded = true;
-                    displayEndScreen();
-                }
+                flyingCaps[i].flyingCap.y = 50000;
+                
                 let cap = new CapWearable(app, lama.lama.x, lama.lama.y, flyingCaps[i].flyingCap.color);
                 caps.push(cap);
             }
         }
     }
+
+    for (let i = 0; i < birds.length; i++) {
+        birds[i].update();
+        if (isColliding(birds[i], lama)) {
+            if (!birds[i].bird.hasCollided) {
+                birds[i].bird.hasCollided = true;
+
+               
+            }
+        }
+        let nbHatsCounter = 0;
+        for(let j = 0; j < caps.length; j++){
+            if (!birds[i].bird.hasCollided & !caps[j].capWearable.hasPopped) {
+                nbHatsCounter++;
+                if (isColliding(birds[i], caps[j])) {
+                    caps[j].capWearable.hasPopped = true;
+                    var lift = Math.floor(Math.random() * 10);
+                    caps[j].capWearable.velocity -= lift;
+                    
+                }
+            }
+        }
+    }
+
     if (tickCounter % 150 == 0 && hasGameStarted && !hasGameEnded) {
         let flyingCap = new CapFlying({ app });
         flyingCaps.push(flyingCap);

@@ -57,7 +57,7 @@ class Lama {
             new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 3*h, w, h)),
         ];
 
-        this.lama = new PIXI.AnimatedSprite(playerSheet.fall_hat);
+        this.lama = new PIXI.AnimatedSprite(playerSheet.walk_hat);
         this.lama.anchor.set(0.5);
         this.lama.animationSpeed = .1;
 
@@ -87,14 +87,22 @@ class Lama {
             this.lama.velocity = 0;
         }
     
+        var index = 0;
         for(var i = 0; i < caps.length ; i++){
-            caps[i].update(this.lama.x, this.lama.y,i);
+            if(!caps[i].capWearable.hasPopped) {
+                caps[i].update(this.lama.x, this.lama.y,index);
+                index++;
+            } else {
+
+                caps[i].capWearable.velocity += caps[i].capWearable.gravity;
+                caps[i].capWearable.y += caps[i].capWearable.velocity;
+            }
         }
     }
 
     lift() {
         this.lama.velocity -= this.lama.lift;
-        this.lama.textures = playerSheet.fly;
+        this.lama.textures = playerSheet.fly_hat;
         this.lama.play();
     }
 
