@@ -1,4 +1,5 @@
 // All the objects that need to be accessible from everywhere
+const SCORE_GOAL = 1;
 let lama;
 let tickCounter = 0;
 let birds = [];
@@ -12,6 +13,7 @@ let scoreText;
 let scoreGoalText;
 let score = 0;
 let hasGameStarted = false;
+let hasGameEnded = false;
 let gameStartText;
 let caps = [];
 let flyingCaps = [];
@@ -20,6 +22,8 @@ let appHeight;
 let hatCounter;
 let downloadButton;
 let appIcon;
+let appLogo;
+let appCredits;
 
 // Initialization function triggered on the loading 
 // of the page
@@ -58,6 +62,7 @@ window.onload = function () {
     app.loader.add("hat_counter", "hatCounter.png");
     app.loader.add("download", "download.png");
     app.loader.add("appIcon", "iconApp.png");
+    app.loader.add("logo", "logo.png");
 
 
     // Loading of the app
@@ -77,7 +82,9 @@ function clickHandler() {
         gameStartText.destroy();
         console.log('Game has started');
     }
-    lama.lift();
+    if (!hasGameEnded) {
+        lama.lift();
+    }
 }
 
 
@@ -111,7 +118,7 @@ function doneLoading() {
     scoreText.y = 28;
     app.stage.addChild(scoreText);
 
-    scoreGoalText = new PIXI.Text('15', { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
+    scoreGoalText = new PIXI.Text(SCORE_GOAL, { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
     scoreGoalText.x = (window.innerWidth / 2) - 5;
     scoreGoalText.y = 28;
     app.stage.addChild(scoreGoalText);
@@ -194,7 +201,7 @@ function gameLoop() {
 
     for (let i = 0; i < birds.length; i++) {
         birds[i].update();
-        if (isColliding(birds[i], lama) && score > 0) {
+        if (isColliding(birds[i], lama) && score > 0 && !hasGameEnded) {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 score -= 1;
@@ -205,26 +212,30 @@ function gameLoop() {
 
     for (let i = 0; i < flyingCaps.length; i++) {
         flyingCaps[i].update();
-        if (isColliding(flyingCaps[i], lama)) {
+        if (isColliding(flyingCaps[i], lama) && !hasGameEnded) {
             if (!flyingCaps[i].flyingCap.hasCollided) {
                 flyingCaps[i].flyingCap.hasCollided = true;
                 flyingCaps[i].flyingCap.x = null;
                 flyingCaps[i].flyingCap.y = null;
                 score += 1;
                 scoreText.text = score;
+                if (score === SCORE_GOAL) {
+                    hasGameEnded = true;
+                    displayEndScreen();
+                }
                 let cap = new CapWearable(app, lama.lama.x, lama.lama.y, flyingCaps[i].flyingCap.color);
                 caps.push(cap);
             }
         }
     }
-    if (tickCounter % 150 == 0 && hasGameStarted) {
+    if (tickCounter % 150 == 0 && hasGameStarted && !hasGameEnded) {
         let flyingCap = new CapFlying({ app });
         flyingCaps.push(flyingCap);
     }
 
     tickCounter++;
 
-    if (tickCounter % 100 == 0 && hasGameStarted) {
+    if (tickCounter % 100 == 0 && hasGameStarted && !hasGameEnded) {
         let bird = new Bird({ app });
         birds.push(bird);
     }
@@ -246,4 +257,20 @@ function updateBackground() {
         bgMiddle.tilePosition.x = bgX / 2;
         bgBack.tilePosition.x = bgX / 4;
     }
+}
+
+function displayEndScreen() {
+    appLogo = new PIXI.Sprite.from(app.loader.resources['logo'].url);
+    const originalWidth = appLogo.width;
+    appLogo.width = (window.innerWidth) - 100;
+    appLogo.height = (window.innerWidth * appLogo.height / originalWidth) - 100;
+    appLogo.x = (window.innerWidth - appLogo.width) / 2;
+    appLogo.y = 25;
+
+    appCredits = new PIXI.Text("CONGRATS!", { fontFamily: 'Berlin Sans FB, sans-serif;', fontSize: 24, align: 'center' });
+    appCredits.x = (window.innerWidth - appCredits.width) / 2;
+    appCredits.y = 25 + appLogo.height;
+
+    app.stage.addChild(appLogo);
+    app.stage.addChild(appCredits);
 }
