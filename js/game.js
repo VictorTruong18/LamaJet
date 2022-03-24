@@ -5,6 +5,7 @@ let birds = [];
 let bgBack;
 let bgMiddle;
 let bgFront;
+let bgGround;
 let bgX = 0;
 let bgSpeed = -1;
 let basicText;
@@ -21,6 +22,7 @@ window.onload = function () {
         {
             width: window.innerWidth,
             height: window.innerHeight,
+            resizeTo : window,
             backgroundColor: 0xAAAAA
         }
     );
@@ -39,6 +41,7 @@ window.onload = function () {
     app.loader.add("bgBack", "sky.png");
     app.loader.add("bgMiddle", "clouds.png");
     app.loader.add("bgFront", "rocks.png");
+    app.loader.add("bgGround", "ground.png");
 
 
     // Loading of the app
@@ -61,7 +64,11 @@ function clickHandler() {
 function doneLoading() {
     bgBack = createBg(app.loader.resources["bgBack"].texture);
     bgMiddle = createBg(app.loader.resources["bgMiddle"].texture);
-    bgFront = createBg(app.loader.resources["bgFront"].texture);
+
+    bgFront = new PIXI.TilingSprite(app.loader.resources["bgFront"].texture, window.innerWidth, window.innerHeight);
+    bgFront.position.set(0, window.innerHeight*0.003);
+    app.stage.addChild(bgFront);
+
 
     // Create the Lama Object 
     lama = new Lama({ app });
@@ -93,6 +100,12 @@ function resizeScreen(){
        appWidth = window.innerWidth;
        appHeight = window.innerHeight;
        app.renderer.resize(window.innerWidth, window.innerHeight);
+       bgBack.width = window.innerWidth;
+       bgBack.height = window.innerHeight;
+       bgMiddle.width = window.innerWidth;
+       bgMiddle.height = window.innerHeight;
+       bgFront.width = window.innerWidth;
+       bgFront.height = window.innerHeight;
     }
 }
 
@@ -130,7 +143,7 @@ function gameLoop() {
 }
 
 function createBg(texture) {
-    let tilling = new PIXI.TilingSprite(texture, window.innerWidth, window.innerHeight);
+    let tilling = new PIXI.TilingSprite(texture, app.view.width,app.view.height);
     
     tilling.position.set(0, 0);
     app.stage.addChild(tilling);
