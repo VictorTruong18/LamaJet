@@ -1,7 +1,8 @@
 
 // Positioning
-const lamaOrginY = 640 / 2;
-const lamaOrginX = 64;
+const lamaOrginY = window.innerHeight / 2;
+const lamaOrginX = window.innerWidth *0.15;
+let floor = window.innerHeight*0.8 ;
 // Physics
 const orginGravity = 0.1;
 const originVelocity = 0;
@@ -76,8 +77,8 @@ class Lama {
     update(){
         this.lama.velocity += this.lama.gravity;
         this.lama.y += this.lama.velocity;
-        if (this.lama.y > 540) {
-            this.lama.y = 540;
+        if (this.lama.y > floor) {
+            this.lama.y = floor;
             this.lama.velocity = 0;
         }
 
@@ -95,6 +96,11 @@ class Lama {
         this.lama.velocity -= this.lama.lift;
         this.lama.textures = playerSheet.fly;
         this.lama.play();
+    }
+
+    resize() {
+        this.lama.x = window.innerHeight *0.15;
+        floor = window.innerHeight*0.8
     }
 
 }

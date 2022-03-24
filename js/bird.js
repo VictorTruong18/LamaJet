@@ -1,6 +1,7 @@
 
 // Positioning
-const birdOrginX = 470;
+let birdOrginX = window.innerWidth;
+let birdOrginY = window.innerHeight;
 const birdSpeed = 3;
 
 
@@ -24,7 +25,7 @@ class Bird {
         this.bird = new PIXI.AnimatedSprite(enemySheet.fly);
         this.bird.animationSpeed = .3;
         this.bird.x = birdOrginX;
-        this.bird.y = Math.floor(Math.random() * (540 - 50)) + 50;
+        this.bird.y = Math.floor(Math.random() * (birdOrginY*0.8 - birdOrginY*0.05)) + birdOrginY*0.05;
         this.bird.hasCollided = false;
         this.bird.play();
         app.stage.addChild(this.bird);
@@ -37,4 +38,5 @@ class Bird {
     update() {
         this.bird.x -= birdSpeed;
     }
+
 }
