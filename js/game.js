@@ -8,12 +8,14 @@ let bgFront;
 let bgGround;
 let bgX = 0;
 let bgSpeed = -1;
-let basicText;
+let scoreText;
+let scoreGoalText;
 let score = 0;
 let caps = [];
 let flyingCaps = [];
 let appWidth;
 let appHeight;
+let hatCounter;
 
 // Initialization function triggered on the loading 
 // of the page
@@ -22,7 +24,7 @@ window.onload = function () {
         {
             width: window.innerWidth,
             height: window.innerHeight,
-            resizeTo : window,
+            resizeTo: window,
             backgroundColor: 0xAAAAA
         }
     );
@@ -36,9 +38,9 @@ window.onload = function () {
     document.querySelector("#container-canvas").addEventListener("pointerdown", clickHandler);
 
     app.loader.baseUrl = "images";
-    app.loader.add("cap_flying_pink","flying_cap_pink.png")
-    app.loader.add("cap_flying_red","cap_flying_red.png")
-    app.loader.add("cap_flying_green","cap_flying_green.png")
+    app.loader.add("cap_flying_pink", "flying_cap_pink.png")
+    app.loader.add("cap_flying_red", "cap_flying_red.png")
+    app.loader.add("cap_flying_green", "cap_flying_green.png")
 
     app.loader.add("cap_wearable_pink", "cap_wearable_pink.png")
     app.loader.add("cap_wearable_green", "cap_wearable_green.png")
@@ -49,13 +51,14 @@ window.onload = function () {
     app.loader.add("bgMiddle", "clouds.png");
     app.loader.add("bgFront", "rocks.png");
     app.loader.add("bgGround", "ground.png");
+    app.loader.add("hat_counter", "hatCounter.png")
 
 
     // Loading of the app
     // Triggers the function doneLoading at finish
     app.loader.load(doneLoading);
 
-    
+
     app.ticker.add(gameLoop);
 
     const container = new PIXI.Container();
@@ -73,17 +76,28 @@ function doneLoading() {
     bgMiddle = createBg(app.loader.resources["bgMiddle"].texture);
 
     bgFront = new PIXI.TilingSprite(app.loader.resources["bgFront"].texture, window.innerWidth, window.innerHeight);
-    bgFront.position.set(0, window.innerHeight*0.003);
+    bgFront.position.set(0, window.innerHeight * 0.003);
     app.stage.addChild(bgFront);
 
 
     // Create the Lama Object 
     lama = new Lama({ app });
-  
-    basicText = new PIXI.Text(score);
-    basicText.x = window.innerWidth / 2;
-    basicText.y = window.innerHeight * 0.10;
-    app.stage.addChild(basicText);
+    hatCounter = new PIXI.Sprite.from(app.loader.resources['hat_counter'].url);
+    hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
+    hatCounter.y = 0;
+    app.stage.addChild(hatCounter);
+
+
+    scoreText = new PIXI.Text(score, { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
+    scoreText.x = (window.innerWidth / 2) - 32;
+    scoreText.y = 28;
+    app.stage.addChild(scoreText);
+
+
+    scoreGoalText = new PIXI.Text('15', { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
+    scoreGoalText.x = (window.innerWidth / 2) - 5;
+    scoreGoalText.y = 28;
+    app.stage.addChild(scoreGoalText);
     app.ticker.add(gameLoop);
 }
 
@@ -98,20 +112,20 @@ function isColliding(a, b) {
         aBox.y < bBox.y + bBox.height;
 }
 
-function resizeScreen(){
-    if(appWidth != window.innerWidth || appHeight != window.innerHeight  ){
-       lama.resize();
-       appWidth = window.innerWidth;
-       appHeight = window.innerHeight;
-       app.renderer.resize(window.innerWidth, window.innerHeight);
-       bgBack.width = window.innerWidth;
-       bgBack.height = window.innerHeight;
-       bgMiddle.width = window.innerWidth;
-       bgMiddle.height = window.innerHeight;
-       bgFront.width = window.innerWidth;
-       bgFront.height = window.innerHeight;
-       birdOrginX = window.innerWidth;
-       birdOrginY = window.innerHeight;
+function resizeScreen() {
+    if (appWidth != window.innerWidth || appHeight != window.innerHeight) {
+        lama.resize();
+        appWidth = window.innerWidth;
+        appHeight = window.innerHeight;
+        app.renderer.resize(window.innerWidth, window.innerHeight);
+        bgBack.width = window.innerWidth;
+        bgBack.height = window.innerHeight;
+        bgMiddle.width = window.innerWidth;
+        bgMiddle.height = window.innerHeight;
+        bgFront.width = window.innerWidth;
+        bgFront.height = window.innerHeight;
+        birdOrginX = window.innerWidth;
+        birdOrginY = window.innerHeight;
     }
 }
 
@@ -126,7 +140,7 @@ function gameLoop() {
 
     lama.update();
 
-    
+
 
     for (let i = 0; i < birds.length; i++) {
         birds[i].update();
@@ -134,7 +148,7 @@ function gameLoop() {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 score -= 1;
-                basicText.text = score;
+                scoreText.text = score;
             }
         }
     }
@@ -147,9 +161,9 @@ function gameLoop() {
                 flyingCaps[i].flyingCap.x = null;
                 flyingCaps[i].flyingCap.y = null;
                 score += 1;
-                basicText.text = score;
+                scoreText.text = score;
                 let cap = new CapWearable(app, lama.lama.x, lama.lama.y, flyingCaps[i].flyingCap.color);
-                 caps.push(cap);
+                caps.push(cap);
             }
         }
     }
@@ -163,13 +177,13 @@ function gameLoop() {
     if (tickCounter % 100 == 0) {
         let bird = new Bird({ app });
         birds.push(bird);
-        
+
     }
 }
 
 function createBg(texture) {
-    let tilling = new PIXI.TilingSprite(texture, app.view.width,app.view.height);
-    
+    let tilling = new PIXI.TilingSprite(texture, app.view.width, app.view.height);
+
     tilling.position.set(0, 0);
     app.stage.addChild(tilling);
 
