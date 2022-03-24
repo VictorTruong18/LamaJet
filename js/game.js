@@ -17,6 +17,8 @@ let appWidth;
 let appHeight;
 let hatCounter;
 let downloadButton;
+let appIcon;
+
 // Initialization function triggered on the loading 
 // of the page
 window.onload = function () {
@@ -53,6 +55,7 @@ window.onload = function () {
     app.loader.add("bgGround", "ground.png");
     app.loader.add("hat_counter", "hatCounter.png");
     app.loader.add("download", "download.png");
+    app.loader.add("appIcon", "iconApp.png");
 
 
     // Loading of the app
@@ -102,13 +105,21 @@ function doneLoading() {
     app.stage.addChild(scoreGoalText);
 
     // Download
+    appIcon = new PIXI.Sprite.from(app.loader.resources['appIcon'].url);
+    appIcon.width = 55;
+    appIcon.height = 55;
+    appIcon.x = (window.innerWidth - appIcon.width) / 2 - 130;
+    appIcon.y = (window.innerHeight - appIcon.height) - 20;
+    app.stage.addChild(appIcon);
+
     downloadButton = new PIXI.Sprite.from(app.loader.resources['download'].url);
-    downloadButton.width *= 3;
-    downloadButton.height *= 3;
-    downloadButton.x = (window.innerWidth - downloadButton.width) / 2;
-    downloadButton.y = (window.innerHeight - downloadButton.height) + 80;
+    downloadButton.width *= 0.3;
+    console.log(downloadButton.width);
+    downloadButton.height *= 0.3;
+    downloadButton.x = (window.innerWidth - downloadButton.width) / 2 + 35;
+    downloadButton.y = (window.innerHeight - downloadButton.height) - 20;
     downloadButton.interactive = true;
-    downloadButton.on('tap', (event) => {
+    downloadButton.on('pointerdown', (event) => {
         window.open('https://en.wikipedia.org/wiki/Llama', '_blank');
     });
     app.stage.addChild(downloadButton);
@@ -142,6 +153,13 @@ function resizeScreen() {
         bgFront.height = window.innerHeight;
         birdOrginX = window.innerWidth;
         birdOrginY = window.innerHeight;
+        appIcon.x = (window.innerWidth - appIcon.width) / 2 - 130;
+        appIcon.y = (window.innerHeight - appIcon.height) - 20;
+        downloadButton.x = (window.innerWidth - downloadButton.width) / 2 + 35;
+        downloadButton.y = (window.innerHeight - downloadButton.height) - 20;
+        hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
+        scoreText.x = (window.innerWidth / 2) - 32;
+        scoreGoalText.x = (window.innerWidth / 2) - 5;
     }
 }
 
