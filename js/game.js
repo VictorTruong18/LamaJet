@@ -178,7 +178,7 @@ function gameLoop() {
 
     for (let i = 0; i < birds.length; i++) {
         birds[i].update();
-        if (isColliding(birds[i], lama)) {
+        if (isColliding(birds[i], lama) && score > 0) {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 score -= 1;
