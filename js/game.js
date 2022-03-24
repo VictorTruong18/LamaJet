@@ -26,6 +26,9 @@ let downloadButton;
 let appIcon;
 let appLogo;
 let appCredits;
+let upgrade;
+let replayButton;
+let creditsButton;
 
 // Initialization function triggered on the loading 
 // of the page
@@ -48,11 +51,11 @@ window.onload = function () {
     document.querySelector("#container-canvas").addEventListener("pointerdown", clickHandler);
 
     app.loader.baseUrl = "images";
-    app.loader.add("cap_flying_pink","flying_cap_pink.png")
-    app.loader.add("cap_flying_red","cap_flying_red.png")
-    app.loader.add("cap_flying_green","cap_flying_green.png")
-    app.loader.add("cap_flying_brightblue","cap_flying_brightblue.png")
-    app.loader.add("cap_flying_darkblue","cap_flying_darkblue.png")
+    app.loader.add("cap_flying_pink", "flying_cap_pink.png")
+    app.loader.add("cap_flying_red", "cap_flying_red.png")
+    app.loader.add("cap_flying_green", "cap_flying_green.png")
+    app.loader.add("cap_flying_brightblue", "cap_flying_brightblue.png")
+    app.loader.add("cap_flying_darkblue", "cap_flying_darkblue.png")
     app.loader.add("cap_wearable_pink", "cap_wearable_pink.png")
     app.loader.add("cap_wearable_green", "cap_wearable_green.png")
     app.loader.add("cap_wearable_red", "cap_wearable_red.png")
@@ -67,7 +70,10 @@ window.onload = function () {
     app.loader.add("hat_counter", "hatCounter.png");
     app.loader.add("download", "download.png");
     app.loader.add("appIcon", "iconApp.png");
-    app.loader.add("logo", "logo.png");
+    app.loader.add("logo", "LamaJetHigh.png");
+    app.loader.add("upgrade", "NewUpgrade.png");
+    app.loader.add("replay", "replay.png");
+    app.loader.add("credits", "credits.png");
 
 
     // Loading of the app
@@ -188,6 +194,18 @@ function resizeScreen() {
         hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
         scoreText.x = (window.innerWidth / 2) - 32;
         scoreGoalText.x = (window.innerWidth / 2) - 5;
+        if (hasGameEnded) {
+            appLogo.x = (window.innerWidth - appLogo.width) / 2;
+            appLogo.y = 25;
+            appCredits.x = (window.innerWidth - appCredits.width) / 2;
+            appCredits.y = 30 + appLogo.height;
+            upgrade.x = (window.innerWidth - upgrade.width) / 2;
+            upgrade.y = 30 + appLogo.height + appCredits.height;
+            replayButton.x = (window.innerWidth - replayButton.width) / 2 - 80;
+            replayButton.y = 30 + appLogo.height + appCredits.height + upgrade.height;
+            creditsButton.x = (window.innerWidth - creditsButton.width) / 2 + 80;
+            creditsButton.y = 30 + appLogo.height + appCredits.height + upgrade.height;
+        }
     }
 }
 
@@ -266,9 +284,6 @@ function updateBackground() {
 
 function displayEndScreen() {
     appLogo = new PIXI.Sprite.from(app.loader.resources['logo'].url);
-    const originalWidth = appLogo.width;
-    appLogo.width = (window.innerWidth - 80);
-    appLogo.height = ((window.innerWidth - 80) * appLogo.height / originalWidth);
     appLogo.x = (window.innerWidth - appLogo.width) / 2;
     appLogo.y = 25;
     appLogo.interactive = true;
@@ -278,8 +293,35 @@ function displayEndScreen() {
 
     appCredits = new PIXI.Text("CONGRATS!", { fontFamily: 'Berlin Sans FB, sans-serif;', fontSize: 24, align: 'center' });
     appCredits.x = (window.innerWidth - appCredits.width) / 2;
-    appCredits.y = 25 + appLogo.height;
+    appCredits.y = 30 + appLogo.height;
+
+    upgrade = new PIXI.Sprite.from(app.loader.resources['upgrade'].url);
+    upgrade.x = (window.innerWidth - upgrade.width) / 2;
+    upgrade.y = 30 + appLogo.height + appCredits.height;
+    upgrade.interactive = true;
+    upgrade.on('pointerdown', (event) => {
+        window.open(DOWNLOAD_URL, '_blank');
+    });
+
+    replayButton = new PIXI.Sprite.from(app.loader.resources['replay'].url);
+    replayButton.x = (window.innerWidth - replayButton.width) / 2 - 80;
+    replayButton.y = 30 + appLogo.height + appCredits.height + upgrade.height;
+    replayButton.interactive = true;
+    replayButton.on('pointerdown', (event) => {
+        document.location.reload(true);
+    });
+
+    creditsButton = new PIXI.Sprite.from(app.loader.resources['credits'].url);
+    creditsButton.x = (window.innerWidth - creditsButton.width) / 2 + 80;
+    creditsButton.y = 30 + appLogo.height + appCredits.height + upgrade.height;
+    creditsButton.interactive = true;
+    creditsButton.on('pointerdown', (event) => {
+        window.open('credits.html');
+    })
 
     app.stage.addChild(appLogo);
+    app.stage.addChild(upgrade);
     app.stage.addChild(appCredits);
+    app.stage.addChild(replayButton);
+    app.stage.addChild(creditsButton);
 }
