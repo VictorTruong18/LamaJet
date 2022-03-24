@@ -11,7 +11,7 @@ let bgSpeed = -1;
 let basicText;
 let score = 0;
 let caps = [];
-
+let flyingCaps = [];
 let appWidth;
 let appHeight;
 
@@ -36,6 +36,13 @@ window.onload = function () {
     document.querySelector("#container-canvas").addEventListener("pointerdown", clickHandler);
 
     app.loader.baseUrl = "images";
+    app.loader.add("cap_flying_pink","flying_cap_pink.png")
+    app.loader.add("cap_flying_red","cap_flying_red.png")
+    app.loader.add("cap_flying_green","cap_flying_green.png")
+
+    app.loader.add("cap_wearable_pink", "cap_wearable_pink.png")
+    app.loader.add("cap_wearable_green", "cap_wearable_green.png")
+    app.loader.add("cap_wearable_red", "cap_wearable_red.png")
     app.loader.add("character", "lama_sprite.png");
     app.loader.add("enemy", "bird-sprite.png");
     app.loader.add("bgBack", "sky.png");
@@ -72,10 +79,7 @@ function doneLoading() {
 
     // Create the Lama Object 
     lama = new Lama({ app });
-    for(var i=0; i < 15; i++){
-        let cap = new CapWearable(app, lama.lama.x, lama.lama.y);
-        caps.push(cap);
-    }
+  
     basicText = new PIXI.Text(score);
     basicText.x = window.innerWidth / 2;
     basicText.y = window.innerHeight * 0.10;
@@ -106,6 +110,8 @@ function resizeScreen(){
        bgMiddle.height = window.innerHeight;
        bgFront.width = window.innerWidth;
        bgFront.height = window.innerHeight;
+       birdOrginX = window.innerWidth;
+       birdOrginY = window.innerHeight;
     }
 }
 
@@ -127,11 +133,29 @@ function gameLoop() {
         if (isColliding(birds[i], lama)) {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
-                lama.lama.lift += .1;
-                score += 1;
+                score -= 1;
                 basicText.text = score;
             }
         }
+    }
+
+    for (let i = 0; i < flyingCaps.length; i++) {
+        flyingCaps[i].update();
+        if (isColliding(flyingCaps[i], lama)) {
+            if (!flyingCaps[i].flyingCap.hasCollided) {
+                flyingCaps[i].flyingCap.hasCollided = true;
+                flyingCaps[i].flyingCap.x = null;
+                flyingCaps[i].flyingCap.y = null;
+                score += 1;
+                basicText.text = score;
+                let cap = new CapWearable(app, lama.lama.x, lama.lama.y, flyingCaps[i].flyingCap.color);
+                 caps.push(cap);
+            }
+        }
+    }
+    if (tickCounter % 150 == 0) {
+        let flyingCap = new CapFlying({ app });
+        flyingCaps.push(flyingCap);
     }
 
     tickCounter++;
@@ -139,6 +163,7 @@ function gameLoop() {
     if (tickCounter % 100 == 0) {
         let bird = new Bird({ app });
         birds.push(bird);
+        
     }
 }
 

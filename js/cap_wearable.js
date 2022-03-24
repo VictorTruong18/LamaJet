@@ -1,9 +1,17 @@
 
 
 class CapWearable {
-    constructor(app,x,y){
+    constructor(app,x,y,color){
         this.app = app;
-        this.capWearable = new PIXI.Sprite.from("../images/cap_wearable_1.png");
+        this.capWearable;
+        if(color == 'GREEN') {
+            this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_green'].url);
+        } else if(color == 'RED') {
+            this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_red'].url);
+        } else if(color == 'PINK') {
+            this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_pink'].url);
+        }
+            
         this.capWearable.x = x-10;
         this.capWearable.y = y-30;
         this.capWearable.height = 30;
