@@ -1,5 +1,7 @@
 // All the objects that need to be accessible from everywhere
 const SCORE_GOAL = 1;
+const DOWNLOAD_URL = "https://en.wikipedia.org/wiki/Llama";
+const CREDITS_URL = "https://epita.fr";
 let lama;
 let tickCounter = 0;
 let birds = [];
@@ -131,7 +133,7 @@ function doneLoading() {
     appIcon.y = (window.innerHeight - appIcon.height) - 20;
     appIcon.interactive = true;
     appIcon.on('pointerdown', (event) => {
-        window.open('https://en.wikipedia.org/wiki/Llama', '_blank');
+        window.open(DOWNLOAD_URL, '_blank');
     });
     app.stage.addChild(appIcon);
 
@@ -142,7 +144,7 @@ function doneLoading() {
     downloadButton.y = (window.innerHeight - downloadButton.height) - 20;
     downloadButton.interactive = true;
     downloadButton.on('pointerdown', (event) => {
-        window.open('https://en.wikipedia.org/wiki/Llama', '_blank');
+        window.open(DOWNLOAD_URL, '_blank');
     });
     app.stage.addChild(downloadButton);
 
@@ -266,6 +268,10 @@ function displayEndScreen() {
     appLogo.height = ((window.innerWidth - 80) * appLogo.height / originalWidth);
     appLogo.x = (window.innerWidth - appLogo.width) / 2;
     appLogo.y = 25;
+    appLogo.interactive = true;
+    appLogo.on('pointerdown', (event) => {
+        window.open(DOWNLOAD_URL, '_blank');
+    });
 
     appCredits = new PIXI.Text("CONGRATS!", { fontFamily: 'Berlin Sans FB, sans-serif;', fontSize: 24, align: 'center' });
     appCredits.x = (window.innerWidth - appCredits.width) / 2;
