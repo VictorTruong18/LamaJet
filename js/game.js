@@ -11,6 +11,8 @@ let bgSpeed = -1;
 let scoreText;
 let scoreGoalText;
 let score = 0;
+let hasGameStarted = false;
+let gameStartText;
 let caps = [];
 let flyingCaps = [];
 let appWidth;
@@ -70,6 +72,11 @@ window.onload = function () {
 }
 
 function clickHandler() {
+    if (!hasGameStarted) {
+        hasGameStarted = true;
+        gameStartText.destroy();
+        console.log('Game has started');
+    }
     lama.lift();
 }
 
@@ -87,6 +94,11 @@ function doneLoading() {
     // Create the Lama Object 
     lama = new Lama({ app });
 
+    // Game Starter
+    gameStartText = new PIXI.Text("CLICK TO PLAY!", { fontFamily: 'Berlin Sans FB, sans-serif;', fontSize: 24, align: 'center' });
+    gameStartText.x = (window.innerWidth - gameStartText.width) / 2
+    gameStartText.y = window.innerHeight / 2;
+    app.stage.addChild(gameStartText);
 
     // Score
     hatCounter = new PIXI.Sprite.from(app.loader.resources['hat_counter'].url);
@@ -205,17 +217,16 @@ function gameLoop() {
             }
         }
     }
-    if (tickCounter % 150 == 0) {
+    if (tickCounter % 150 == 0 && hasGameStarted) {
         let flyingCap = new CapFlying({ app });
         flyingCaps.push(flyingCap);
     }
 
     tickCounter++;
 
-    if (tickCounter % 100 == 0) {
+    if (tickCounter % 100 == 0 && hasGameStarted) {
         let bird = new Bird({ app });
         birds.push(bird);
-
     }
 }
 
