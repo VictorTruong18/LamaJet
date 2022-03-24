@@ -1,4 +1,4 @@
-const capColors = ['GREEN','RED','PINK'];
+const capColors = ['GREEN','RED','PINK', 'DARKBLUE', 'BRIGHTBLUE'];
 
 
 class CapFlying {
@@ -12,6 +12,10 @@ class CapFlying {
              ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['cap_flying_red'].url);
         } else if(color == 'PINK'){ 
              ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['cap_flying_pink'].url);
+        } else if (color == 'DARKBLUE'){
+            ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['cap_flying_darkblue'].url);
+        } else if (color == 'BRIGHTBLUE'){
+            ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['cap_flying_brightblue'].url);
         }
         
         

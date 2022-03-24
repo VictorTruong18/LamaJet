@@ -10,6 +10,10 @@ class CapWearable {
             this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_red'].url);
         } else if(color == 'PINK') {
             this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_pink'].url);
+        } else if (color == 'DARKBLUE') {
+            this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_darkblue'].url);
+        } else if (color == 'BRIGHTBLUE') {
+            this.capWearable = new PIXI.Sprite.from(this.app.loader.resources['cap_wearable_brightblue'].url);
         }
             
         this.capWearable.x = x-10;

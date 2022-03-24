@@ -39,10 +39,13 @@ window.onload = function () {
     app.loader.add("cap_flying_pink","flying_cap_pink.png")
     app.loader.add("cap_flying_red","cap_flying_red.png")
     app.loader.add("cap_flying_green","cap_flying_green.png")
-
+    app.loader.add("cap_flying_brightblue","cap_flying_brightblue.png")
+    app.loader.add("cap_flying_darkblue","cap_flying_darkblue.png")
     app.loader.add("cap_wearable_pink", "cap_wearable_pink.png")
     app.loader.add("cap_wearable_green", "cap_wearable_green.png")
     app.loader.add("cap_wearable_red", "cap_wearable_red.png")
+    app.loader.add("cap_wearable_brightblue", "cap_wearable_brightblue.png")
+    app.loader.add("cap_wearable_darkblue", "cap_wearable_darkblue.png")
     app.loader.add("character", "lama_sprite.png");
     app.loader.add("enemy", "bird-sprite.png");
     app.loader.add("bgBack", "sky.png");
