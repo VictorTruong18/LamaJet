@@ -16,7 +16,7 @@ let flyingCaps = [];
 let appWidth;
 let appHeight;
 let hatCounter;
-
+let downloadButton;
 // Initialization function triggered on the loading 
 // of the page
 window.onload = function () {
@@ -51,7 +51,8 @@ window.onload = function () {
     app.loader.add("bgMiddle", "clouds.png");
     app.loader.add("bgFront", "rocks.png");
     app.loader.add("bgGround", "ground.png");
-    app.loader.add("hat_counter", "hatCounter.png")
+    app.loader.add("hat_counter", "hatCounter.png");
+    app.loader.add("download", "download.png");
 
 
     // Loading of the app
@@ -82,22 +83,37 @@ function doneLoading() {
 
     // Create the Lama Object 
     lama = new Lama({ app });
+
+
+    // Score
     hatCounter = new PIXI.Sprite.from(app.loader.resources['hat_counter'].url);
     hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
     hatCounter.y = 0;
     app.stage.addChild(hatCounter);
-
 
     scoreText = new PIXI.Text(score, { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
     scoreText.x = (window.innerWidth / 2) - 32;
     scoreText.y = 28;
     app.stage.addChild(scoreText);
 
-
     scoreGoalText = new PIXI.Text('15', { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
     scoreGoalText.x = (window.innerWidth / 2) - 5;
     scoreGoalText.y = 28;
     app.stage.addChild(scoreGoalText);
+
+    // Download
+    downloadButton = new PIXI.Sprite.from(app.loader.resources['download'].url);
+    downloadButton.width *= 3;
+    downloadButton.height *= 3;
+    downloadButton.x = (window.innerWidth - downloadButton.width) / 2;
+    downloadButton.y = (window.innerHeight - downloadButton.height) + 80;
+    downloadButton.interactive = true;
+    downloadButton.on('tap', (event) => {
+        window.open('https://en.wikipedia.org/wiki/Llama', '_blank');
+    });
+    app.stage.addChild(downloadButton);
+
+
     app.ticker.add(gameLoop);
 }
 
