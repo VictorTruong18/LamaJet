@@ -262,8 +262,8 @@ function updateBackground() {
 function displayEndScreen() {
     appLogo = new PIXI.Sprite.from(app.loader.resources['logo'].url);
     const originalWidth = appLogo.width;
-    appLogo.width = (window.innerWidth) - 100;
-    appLogo.height = (window.innerWidth * appLogo.height / originalWidth) - 100;
+    appLogo.width = (window.innerWidth - 80);
+    appLogo.height = ((window.innerWidth - 80) * appLogo.height / originalWidth);
     appLogo.x = (window.innerWidth - appLogo.width) / 2;
     appLogo.y = 25;
 
