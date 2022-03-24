@@ -110,11 +110,14 @@ function doneLoading() {
     appIcon.height = 55;
     appIcon.x = (window.innerWidth - appIcon.width) / 2 - 130;
     appIcon.y = (window.innerHeight - appIcon.height) - 20;
+    appIcon.interactive = true;
+    appIcon.on('pointerdown', (event) => {
+        window.open('https://en.wikipedia.org/wiki/Llama', '_blank');
+    });
     app.stage.addChild(appIcon);
 
     downloadButton = new PIXI.Sprite.from(app.loader.resources['download'].url);
     downloadButton.width *= 0.3;
-    console.log(downloadButton.width);
     downloadButton.height *= 0.3;
     downloadButton.x = (window.innerWidth - downloadButton.width) / 2 + 35;
     downloadButton.y = (window.innerHeight - downloadButton.height) - 20;
