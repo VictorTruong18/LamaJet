@@ -81,7 +81,7 @@ window.onload = function () {
     // Loading of the app
     // Triggers the function doneLoading at finish
     app.loader.load(doneLoading);
-
+    window.addEventListener("keydown", keysDown);
 
     app.ticker.add(gameLoop);
 
@@ -98,6 +98,18 @@ function clickHandler() {
     if (!hasGameEnded) {
         lama.lift();
     }
+}
+
+function keysDown(e){ 
+    if (!hasGameStarted && e.keyCode == 32) {
+        hasGameStarted = true;
+        gameStartText.destroy();
+        console.log('Game has started');
+    }
+    if (!hasGameEnded && e.keyCode == 32) {
+        lama.lift();
+    }
+
 }
 
 
@@ -345,4 +357,6 @@ function displayEndScreen() {
     app.stage.addChild(appCredits);
     app.stage.addChild(replayButton);
     app.stage.addChild(creditsButton);
+
+    
 }

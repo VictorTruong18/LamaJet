@@ -75,9 +75,14 @@ class Lama {
         if (this.lama.y > floor) {
             this.lama.y = floor;
             this.lama.velocity = 0;
+            
         }
         if(this.lama.isStunned){
             this.lama.stunnedCooldown += 1;
+        }
+
+        if(this.lama.stunnedCooldown > 200 && this.lama.isStunned){
+            this.lama.isStunned = false;
         }
 
         if (this.lama.y < 0) {
@@ -99,13 +104,13 @@ class Lama {
     }
 
     lift() {
-        console.log(this.lama.stunnedCooldown)
-        if(this.lama.stunnedCooldown > 200 ){
+        if(this.lama.stunnedCooldown > 200 ||  !this.lama.isStunned){
             this.lama.velocity -= this.lama.lift;
             this.lama.textures = playerSheet.fly_hat;
             this.lama.play();
         } else {
             this.lama.velocity -= this.lama.lift;
+            
         }
         
     }
