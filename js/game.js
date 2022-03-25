@@ -38,7 +38,7 @@ let birdCooldown = 100;
 
 var audio = {
     'music': new Audio('./sounds/Musique.mp3'),
-    'intro': new Audio('./sounds/IntroLoop.mp3'),
+    'intro': new Audio('./sounds/PontMusique.mp3'),
     'hittingBird': new Audio('./sounds/HittingBirds.mp3'),
     'bonnet': new Audio('./sounds/BonnetSound.mp3'),
     'jetPack': new Audio('./sounds/Jetpack.mp3'),
@@ -106,10 +106,24 @@ window.onload = function () {
     app.stage.addChild(container);
 }
 
-function clickHandler() {
+function startIntent(x,y){
+    console.log("click " + x + " "+ y);
+    console.log(muteButton.x);
+    console.log(muteButton.y);
+    console.log(muteButton.width);
+    console.log(muteButton.height);
+    if(x  >= muteButton.x && x <= muteButton.x + muteButton.width && y >= muteButton.y && y <= muteButton.y + muteButton.height){
+        return true;
+    } else {
+        return false;
+    }
+  
+}
 
+function clickHandler(e) {
 
-    if (!hasGameStarted) {
+  
+    if (!hasGameStarted && !startIntent(e.x,e.y)) {
         hasGameStarted = true;
         gameStartText.destroy();
         audio['music'].loop = true;
@@ -137,6 +151,7 @@ function keysDown(e) {
     }
 
 }
+
 
 
 // Starts the gameLoop
@@ -228,6 +243,12 @@ function doneLoading() {
     });
     app.stage.addChild(downloadButton);
     app.ticker.add(gameLoop);
+
+    if (!isAudioMute) {
+        audio['intro'].loop = true;
+        audio['intro'].volume = 0.1;
+        audio['intro'].play();
+    }
 }
 
 
@@ -288,7 +309,7 @@ function resizeScreen() {
 
 function playIntroTheme() {
     if (!isAudioMute) {
-        audio['intro'].loop = true;
+        audio['intro'].loop = false;
         audio['intro'].volume = 0.1;
         audio['intro'].play();
         playTheme = false;
