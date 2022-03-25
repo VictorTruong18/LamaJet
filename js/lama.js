@@ -73,6 +73,13 @@ class Lama {
         this.lama.velocity += this.lama.gravity;
         this.lama.y += this.lama.velocity;
         if (this.lama.y > floor) {
+            if (!isAudioMute && !running) {
+                audio['running'].loop = true;
+                audio['running'].volume = 0.6;
+                audio['running'].play();
+                running = true;
+        
+            }
             this.lama.y = floor;
             this.lama.velocity = 0;
 
@@ -111,7 +118,10 @@ class Lama {
             if (!isAudioMute) {
                 audio['jetPack'].volume = 0.3;
                 audio['jetPack'].play();
+                audio['running'].pause();
+                running = false;
             }
+
         } else {
             this.lama.velocity -= this.lama.lift;
 

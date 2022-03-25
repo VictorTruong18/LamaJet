@@ -35,6 +35,7 @@ let muteButton;
 let unmuteButton;
 let isAudioMute = false;
 let birdCooldown = 100;
+let running = false;
 
 var audio = {
     'music': new Audio('./sounds/Musique.mp3'),
@@ -44,7 +45,8 @@ var audio = {
     'jetPack': new Audio('./sounds/Jetpack.mp3'),
     'lamaHurt': new Audio('./sounds/Lama_Hurt.mp3'),
     'endMusic' : new Audio('./sounds/EndMusic.mp3'),
-    'endSound' : new Audio('./sounds/EndSound.mp3')
+    'endSound' : new Audio('./sounds/EndSound.mp3'),
+    'running' : new Audio('./sounds/runningLama_HD.mp3')
 }
 
 // Initialization function triggered on the loading 
@@ -214,6 +216,7 @@ function doneLoading() {
             audio['music'].volume = 0.05;
             audio['endSound'].volume = 0.2;
             audio['endMusic'].volume = 0.05;
+            audio['running'].volume = 0.3;
             muteButton.alpha = 1;
         }
     });
@@ -308,13 +311,7 @@ function resizeScreen() {
 }
 
 function playIntroTheme() {
-    if (!isAudioMute) {
-        audio['intro'].loop = false;
-        audio['intro'].volume = 0.1;
-        audio['intro'].play();
-        playTheme = false;
-
-    }
+    
 }
 
 function gameLoop() {
@@ -407,6 +404,7 @@ function gameLoop() {
     if(window.innerWidth < 500){
         birdCooldown = 120;
     }
+
 }
 
 function createBg(texture) {
