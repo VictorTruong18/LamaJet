@@ -6,7 +6,7 @@ let floor = window.innerHeight*0.8 ;
 // Physics
 const orginGravity = 0.1;
 const originVelocity = 0;
-const lift = 4;
+const lift = 5;
 const playerSheet = {};
 
         
@@ -108,8 +108,8 @@ class Lama {
             this.lama.velocity -= this.lama.lift;
             this.lama.textures = playerSheet.fly_hat;
             this.lama.play();
-            audio['jetPack'].volume=0.5;
-                audio['jetPack'].play();
+            audio['jetPack'].volume=0.3;
+            audio['jetPack'].play();
         } else {
             this.lama.velocity -= this.lama.lift;
             

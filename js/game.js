@@ -298,9 +298,9 @@ function gameLoop() {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 lama.stunned();
-                audio['hittingBird'].volume=0.1;
+                audio['hittingBird'].volume=0.2;
                 audio['hittingBird'].play();
-                audio['lamaHurt'].volume=0.05;
+                audio['lamaHurt'].volume=0.2;
                 audio['lamaHurt'].play();
             }
         }
@@ -312,7 +312,7 @@ function gameLoop() {
                     caps[j].capWearable.hasPopped = true;
                     var lift = Math.floor(Math.random() * 10);
                     caps[j].capWearable.velocity -= lift;
-                    audio['lamaHurt'].volume=0.05;
+                    audio['lamaHurt'].volume=0.2;
                     audio['lamaHurt'].play();
                     
                 }
