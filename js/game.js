@@ -83,7 +83,7 @@ window.onload = function () {
     app.loader.add("bgMiddle", "clouds.png");
     app.loader.add("bgFront", "rocks.png");
     app.loader.add("bgGround", "ground.png");
-    app.loader.add("hat_counter", "hatCounter.png");
+    app.loader.add("hat_counter", "hatCounter2.png");
     app.loader.add("download", "download.png");
     app.loader.add("appIcon", "iconApp.png");
     app.loader.add("logo", "LamaJetHigh.png");
