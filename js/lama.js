@@ -6,7 +6,7 @@ let floor = window.innerHeight*0.8 ;
 // Physics
 const orginGravity = 0.1;
 const originVelocity = 0;
-const lift = 3;
+const lift = 4;
 const playerSheet = {};
 
         
@@ -81,7 +81,7 @@ class Lama {
             this.lama.stunnedCooldown += 1;
         }
 
-        if(this.lama.stunnedCooldown > 200 && this.lama.isStunned){
+        if(this.lama.stunnedCooldown > 150 && this.lama.isStunned){
             this.lama.isStunned = false;
         }
 
@@ -104,7 +104,7 @@ class Lama {
     }
 
     lift() {
-        if(this.lama.stunnedCooldown > 200 ||  !this.lama.isStunned){
+        if(this.lama.stunnedCooldown > 150 ||  !this.lama.isStunned){
             this.lama.velocity -= this.lama.lift;
             this.lama.textures = playerSheet.fly_hat;
             this.lama.play();

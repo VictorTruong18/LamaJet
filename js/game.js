@@ -92,7 +92,7 @@ window.onload = function () {
     app.loader.load(doneLoading);
     window.addEventListener("keydown", keysDown);
 
-    app.ticker.add(gameLoop);
+   
 
     const container = new PIXI.Container();
     app.stage.addChild(container);
@@ -105,7 +105,7 @@ function clickHandler() {
         hasGameStarted = true;
         gameStartText.destroy();
         audio['music'].loop=true;
-        audio['music'].volume=0.1;
+        audio['music'].volume=0.05;
         audio['music'].play();
         audio['intro'].pause();
     }
@@ -120,9 +120,9 @@ function keysDown(e){
         gameStartText.destroy();
         console.log('Game has started');
         audio['music'].loop=true;
-        audio['music'].volume=0.1;
+        audio['music'].volume=0.05;
         audio['music'].play();
-        audio['intro'].pause();
+       
     }
     if (!hasGameEnded && e.keyCode == 32) {
         lama.lift();
