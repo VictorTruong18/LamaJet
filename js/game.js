@@ -227,6 +227,8 @@ function resizeScreen() {
         hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
         scoreText.x = (window.innerWidth / 2) - 32;
         scoreGoalText.x = (window.innerWidth / 2) - 5;
+        gameStartText.x = (window.innerWidth - gameStartText.width) / 2
+    gameStartText.y = window.innerHeight / 2;
         if (hasGameEnded) {
             appLogo.x = (window.innerWidth - appLogo.width) / 2;
             appLogo.y = 25;
