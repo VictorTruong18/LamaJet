@@ -29,6 +29,7 @@ let appCredits;
 let upgrade;
 let replayButton;
 let creditsButton;
+let trueEnding = false;
 
 // Initialization function triggered on the loading 
 // of the page
@@ -55,6 +56,7 @@ window.onload = function () {
     app.loader.add("cap_flying_red", "cap_flying_red.png")
     app.loader.add("cap_flying_green", "cap_flying_green.png")
     app.loader.add("cap_flying_brightblue", "cap_flying_brightblue.png")
+    app.loader.add("character_stunned", "stunned_sprite.png")
     app.loader.add("cap_flying_darkblue", "cap_flying_darkblue.png")
     app.loader.add("cap_wearable_pink", "cap_wearable_pink.png")
     app.loader.add("cap_wearable_green", "cap_wearable_green.png")
@@ -226,8 +228,9 @@ function gameLoop() {
             counter++;
         }
     }
-    if (score === SCORE_GOAL) {
+    if (score === SCORE_GOAL && !trueEnding) {
         hasGameEnded = true;
+        trueEnding = true;
         displayEndScreen();
     }
     score = counter;
@@ -251,8 +254,8 @@ function gameLoop() {
         if (isColliding(birds[i], lama)) {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
-
-               
+                lama.stunned();
+                
             }
         }
         let nbHatsCounter = 0;

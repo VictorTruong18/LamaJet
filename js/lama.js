@@ -17,36 +17,16 @@ class Lama {
         // Load the Pixi object
         this.app = app;
         const ssheet = new PIXI.BaseTexture.from(this.app.loader.resources['character'].url);
-        
+        const stunnedsheet = new PIXI.BaseTexture.from(this.app.loader.resources['character_stunned'].url);
         const w = 80;
         const h = 80;
-
-        playerSheet["walk"] = [
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 0, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 0, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 0, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 0, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 0, w, h)),
-        ];
-
-        playerSheet["fly"] = [
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, h, w, h)),
-        ];
-
+        
         playerSheet["fly_hat"] = [
             new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 2*h, w, h)),
             new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 2*h, w, h)),
             new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 2*h, w, h)),
             new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 2*h, w, h)),
             new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 2*h, w, h)),
-        ];
-
-        playerSheet["fall_hat"] = [
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 3*h, w, h)),
         ];
 
         playerSheet["walk_hat"] = [
@@ -57,9 +37,24 @@ class Lama {
             new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 3*h, w, h)),
         ];
 
+        playerSheet["stunned"] = [
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(0, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture(stunnedsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+        ];
+
         this.lama = new PIXI.AnimatedSprite(playerSheet.walk_hat);
         this.lama.anchor.set(0.5);
         this.lama.animationSpeed = .1;
+        this.lama.stunnedCooldown = 0;
+        this.lama.isStunned = false;
 
         this.lama.x = lamaOrginX;
         this.lama.y = lamaOrginY;
@@ -81,6 +76,9 @@ class Lama {
             this.lama.y = floor;
             this.lama.velocity = 0;
         }
+        if(this.lama.isStunned){
+            this.lama.stunnedCooldown += 1;
+        }
 
         if (this.lama.y < 0) {
             this.lama.y = 0;
@@ -101,14 +99,36 @@ class Lama {
     }
 
     lift() {
-        this.lama.velocity -= this.lama.lift;
-        this.lama.textures = playerSheet.fly_hat;
-        this.lama.play();
+        console.log(this.lama.stunnedCooldown)
+        if(this.lama.stunnedCooldown > 200 ){
+            this.lama.velocity -= this.lama.lift;
+            this.lama.textures = playerSheet.fly_hat;
+            this.lama.play();
+        } else {
+            this.lama.velocity -= this.lama.lift;
+        }
+        
     }
 
     resize() {
         this.lama.x = window.innerHeight *0.15;
         floor = window.innerHeight*0.8
+    }
+
+    stunned() {
+        this.lama.isStunned = true;
+        this.lama.stunnedCooldown = 0;
+        var found = false;
+
+           for(let i = 0; i < caps.length; i++){
+                if(!caps[i].capWearable.hasPopped && !found){
+                    caps[i].capWearable.hasPopped = true;
+                    caps[i].capWearable.velocity -= lift;
+                    found = true;
+                }
+           }
+        this.lama.textures = playerSheet.stunned;
+        this.lama.play();
     }
 
 }
