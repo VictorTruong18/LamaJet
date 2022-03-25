@@ -1,15 +1,15 @@
 
 // Positioning
 const lamaOrginY = window.innerHeight / 2;
-const lamaOrginX = window.innerWidth *0.15;
-let floor = window.innerHeight*0.8 ;
+const lamaOrginX = window.innerWidth * 0.15;
+let floor = window.innerHeight * 0.8;
 // Physics
 const orginGravity = 0.1;
 const originVelocity = 0;
 const lift = 5;
 const playerSheet = {};
 
-        
+
 
 // Main playable character
 class Lama {
@@ -20,21 +20,21 @@ class Lama {
         const stunnedsheet = new PIXI.BaseTexture.from(this.app.loader.resources['character_stunned'].url);
         const w = 80;
         const h = 80;
-        
+
         playerSheet["fly_hat"] = [
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 2*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 2*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 2*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 2*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 2*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 2 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 2 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 2 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 2 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 2 * h, w, h)),
         ];
 
         playerSheet["walk_hat"] = [
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 3*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 3*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 3*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 3*h, w, h)),
-            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 3*h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(0, 3 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 3 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * w, 3 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * w, 3 * h, w, h)),
+            new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * w, 3 * h, w, h)),
         ];
 
         playerSheet["stunned"] = [
@@ -68,20 +68,20 @@ class Lama {
     bounds() {
         return this.lama.getBounds();
     }
-    
-    update(){
+
+    update() {
         this.lama.velocity += this.lama.gravity;
         this.lama.y += this.lama.velocity;
         if (this.lama.y > floor) {
             this.lama.y = floor;
             this.lama.velocity = 0;
-            
+
         }
-        if(this.lama.isStunned){
+        if (this.lama.isStunned) {
             this.lama.stunnedCooldown += 1;
         }
 
-        if(this.lama.stunnedCooldown > 150 && this.lama.isStunned){
+        if (this.lama.stunnedCooldown > 150 && this.lama.isStunned) {
             this.lama.isStunned = false;
         }
 
@@ -89,11 +89,11 @@ class Lama {
             this.lama.y = 0;
             this.lama.velocity = 0;
         }
-    
+
         var index = 0;
-        for(var i = 0; i < caps.length ; i++){
-            if(!caps[i].capWearable.hasPopped) {
-                caps[i].update(this.lama.x, this.lama.y,index);
+        for (var i = 0; i < caps.length; i++) {
+            if (!caps[i].capWearable.hasPopped) {
+                caps[i].update(this.lama.x, this.lama.y, index);
                 index++;
             } else {
 
@@ -103,24 +103,26 @@ class Lama {
         }
     }
 
-    lift() {
-        if(this.lama.stunnedCooldown > 150 ||  !this.lama.isStunned){
+    lift(isAudioMute) {
+        if (this.lama.stunnedCooldown > 150 || !this.lama.isStunned) {
             this.lama.velocity -= this.lama.lift;
             this.lama.textures = playerSheet.fly_hat;
             this.lama.play();
-            audio['jetPack'].volume=0.3;
-            audio['jetPack'].play();
+            if (!isAudioMute) {
+                audio['jetPack'].volume = 0.3;
+                audio['jetPack'].play();
+            }
         } else {
             this.lama.velocity -= this.lama.lift;
-            
-            
+
+
         }
-        
+
     }
 
     resize() {
-        this.lama.x = window.innerHeight *0.15;
-        floor = window.innerHeight*0.8
+        this.lama.x = window.innerHeight * 0.15;
+        floor = window.innerHeight * 0.8
     }
 
     stunned() {
@@ -128,13 +130,13 @@ class Lama {
         this.lama.stunnedCooldown = 0;
         var found = false;
 
-           for(let i = 0; i < caps.length; i++){
-                if(!caps[i].capWearable.hasPopped && !found){
-                    caps[i].capWearable.hasPopped = true;
-                    caps[i].capWearable.velocity -= lift;
-                    found = true;
-                }
-           }
+        for (let i = 0; i < caps.length; i++) {
+            if (!caps[i].capWearable.hasPopped && !found) {
+                caps[i].capWearable.hasPopped = true;
+                caps[i].capWearable.velocity -= lift;
+                found = true;
+            }
+        }
         this.lama.textures = playerSheet.stunned;
         this.lama.play();
     }
