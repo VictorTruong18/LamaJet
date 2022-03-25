@@ -31,14 +31,17 @@ let replayButton;
 let creditsButton;
 let trueEnding = false;
 let playTheme = true;
+let muteButton;
+let unmuteButton;
+let isAudioMute = false;
 
 var audio = {
     'music': new Audio('./sounds/Musique.mp3'),
-    'intro' : new Audio('./sounds/IntroLoop.mp3'),
-    'hittingBird' : new Audio('./sounds/HittingBirds.mp3'),
-    'bonnet' : new Audio('./sounds/BonnetSound.mp3'),
-    'jetPack' : new Audio('./sounds/Jetpack.mp3'),
-    'lamaHurt' : new Audio('./sounds/Lama_Hurt.mp3')
+    'intro': new Audio('./sounds/IntroLoop.mp3'),
+    'hittingBird': new Audio('./sounds/HittingBirds.mp3'),
+    'bonnet': new Audio('./sounds/BonnetSound.mp3'),
+    'jetPack': new Audio('./sounds/Jetpack.mp3'),
+    'lamaHurt': new Audio('./sounds/Lama_Hurt.mp3')
 }
 
 // Initialization function triggered on the loading 
@@ -86,48 +89,50 @@ window.onload = function () {
     app.loader.add("upgrade", "NewUpgrade.png");
     app.loader.add("replay", "replay.png");
     app.loader.add("credits", "credits.png");
+    app.loader.add("mute", "mute.png");
+    app.loader.add("unmute", "unmute.png");
 
     // Loading of the app
     // Triggers the function doneLoading at finish
     app.loader.load(doneLoading);
     window.addEventListener("keydown", keysDown);
 
-   
+
 
     const container = new PIXI.Container();
     app.stage.addChild(container);
 }
 
 function clickHandler() {
-    
-    
+
+
     if (!hasGameStarted) {
         hasGameStarted = true;
         gameStartText.destroy();
-        audio['music'].loop=true;
-        audio['music'].volume=0.05;
+        audio['music'].loop = true;
+        audio['music'].volume = 0.05;
         audio['music'].play();
         audio['intro'].pause();
     }
     if (!hasGameEnded) {
-        lama.lift();
+        lama.lift(isAudioMute);
     }
 }
 
-function keysDown(e){ 
+function keysDown(e) {
     if (!hasGameStarted && e.keyCode == 32) {
         hasGameStarted = true;
         gameStartText.destroy();
         console.log('Game has started');
-        audio['music'].loop=true;
-        audio['music'].volume=0.05;
+        audio['music'].loop = true;
+        audio['music'].volume = 0.05;
         audio['music'].play();
-       
+
     }
     if (!hasGameEnded && e.keyCode == 32) {
-        lama.lift();
+        lama.lift(isAudioMute);
     }
- 
+
 }
 
 
@@ -140,7 +145,7 @@ function doneLoading() {
     bgFront.position.set(0, window.innerHeight * 0.003);
     app.stage.addChild(bgFront);
 
-    
+
     // Create the Lama Object 
     lama = new Lama({ app });
 
@@ -166,6 +171,35 @@ function doneLoading() {
     scoreGoalText.y = 28;
     app.stage.addChild(scoreGoalText);
 
+    // Mute
+    unmuteButton = new PIXI.Sprite.from(app.loader.resources['unmute'].url);
+    unmuteButton.x = (window.innerWidth - unmuteButton.width) / 2 + 125;
+    unmuteButton.y = 20;
+    muteButton = new PIXI.Sprite.from(app.loader.resources['mute'].url);
+    muteButton.x = (window.innerWidth - muteButton.width) / 2 + 125;
+    muteButton.y = 20;
+    muteButton.interactive = true;
+    muteButton.on('pointerdown', (event) => {
+        if (!isAudioMute) {
+            isAudioMute = true;
+            for (var key in audio) {
+                audio[key].volume = 0;
+            }
+            muteButton.alpha = 0;
+        } else {
+            isAudioMute = false;
+            audio['hittingBird'].volume = 0.2;
+            audio['lamaHurt'].volume = 0.2;
+            audio['intro'].volume = 0.1;
+            audio['bonnet'].volume = 0.1;
+            audio['jetPack'].volume = 0.3;
+            audio['music'].volume = 0.05;
+            muteButton.alpha = 1;
+        }
+    });
+    app.stage.addChild(unmuteButton);
+    app.stage.addChild(muteButton);
+
     // Download
     appIcon = new PIXI.Sprite.from(app.loader.resources['appIcon'].url);
     appIcon.width = 55;
@@ -188,9 +222,6 @@ function doneLoading() {
         window.location.href = DOWNLOAD_URL;
     });
     app.stage.addChild(downloadButton);
-
-
-
     app.ticker.add(gameLoop);
 }
 
@@ -227,8 +258,14 @@ function resizeScreen() {
         hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
         scoreText.x = (window.innerWidth / 2) - 32;
         scoreGoalText.x = (window.innerWidth / 2) - 5;
-        gameStartText.x = (window.innerWidth - gameStartText.width) / 2
-    gameStartText.y = window.innerHeight / 2;
+        unmuteButton.x = (window.innerWidth - unmuteButton.width) / 2 + 125;
+        unmuteButton.y = 20;
+        muteButton.x = (window.innerWidth - muteButton.width) / 2 + 125;
+        muteButton.y = 20;
+        if (!hasGameStarted) {
+            gameStartText.x = (window.innerWidth - gameStartText.width) / 2
+            gameStartText.y = window.innerHeight / 2;
+        }
         if (hasGameEnded) {
             appLogo.x = (window.innerWidth - appLogo.width) / 2;
             appLogo.y = 25;
@@ -244,12 +281,14 @@ function resizeScreen() {
     }
 }
 
-function playIntroTheme(){
-    audio['intro'].loop=true;
-    audio['intro'].volume=0.1;
-    audio['intro'].play();
-    playTheme = false;
-    
+function playIntroTheme() {
+    if (!isAudioMute) {
+        audio['intro'].loop = true;
+        audio['intro'].volume = 0.1;
+        audio['intro'].play();
+        playTheme = false;
+
+    }
 }
 
 function gameLoop() {
@@ -265,8 +304,8 @@ function gameLoop() {
     if (lama) { lama.update(); }
 
     let counter = 0;
-    for(let i = 0; i < caps.length; i++){
-        if(!caps[i].capWearable.hasPopped){
+    for (let i = 0; i < caps.length; i++) {
+        if (!caps[i].capWearable.hasPopped) {
             counter++;
         }
     }
@@ -284,8 +323,10 @@ function gameLoop() {
                 flyingCaps[i].flyingCap.hasCollided = true;
                 flyingCaps[i].flyingCap.x = null;
                 flyingCaps[i].flyingCap.y = 50000;
-                audio['bonnet'].volume=0.1;
-                 audio['bonnet'].play();
+                if (!isAudioMute) {
+                    audio['bonnet'].volume = 0.1;
+                    audio['bonnet'].play();
+                }
                 let cap = new CapWearable(app, lama.lama.x, lama.lama.y, flyingCaps[i].flyingCap.color);
                 caps.push(cap);
             }
@@ -298,23 +339,26 @@ function gameLoop() {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 lama.stunned();
-                audio['hittingBird'].volume=0.2;
-                audio['hittingBird'].play();
-                audio['lamaHurt'].volume=0.2;
-                audio['lamaHurt'].play();
+                if (!isAudioMute) {
+                    audio['hittingBird'].volume = 0.2;
+                    audio['hittingBird'].play();
+                    audio['lamaHurt'].volume = 0.2;
+                    audio['lamaHurt'].play();
+                }
             }
         }
         let nbHatsCounter = 0;
-        for(let j = 0; j < caps.length; j++){
+        for (let j = 0; j < caps.length; j++) {
             if (!birds[i].bird.hasCollided & !caps[j].capWearable.hasPopped) {
                 nbHatsCounter++;
                 if (isColliding(birds[i], caps[j])) {
                     caps[j].capWearable.hasPopped = true;
                     var lift = Math.floor(Math.random() * 10);
                     caps[j].capWearable.velocity -= lift;
-                    audio['lamaHurt'].volume=0.2;
-                    audio['lamaHurt'].play();
-                    
+                    if (!isAudioMute) {
+                        audio['lamaHurt'].volume = 0.2;
+                        audio['lamaHurt'].play();
+                    }
                 }
             }
         }
@@ -332,7 +376,7 @@ function gameLoop() {
         birds.push(bird);
     }
 
-    
+
 }
 
 function createBg(texture) {
@@ -396,5 +440,5 @@ function displayEndScreen() {
     app.stage.addChild(replayButton);
     app.stage.addChild(creditsButton);
 
-    
+
 }
