@@ -43,7 +43,7 @@ class CapFlying {
     }
 
     update() {
-        this.flyingCap.x -= birdSpeed;
+        this.flyingCap.x -= birdSpeed - 1;
     }
 
     bounds() {

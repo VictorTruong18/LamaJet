@@ -34,6 +34,7 @@ let playTheme = true;
 let muteButton;
 let unmuteButton;
 let isAudioMute = false;
+let birdCooldown = 100;
 
 var audio = {
     'music': new Audio('./sounds/Musique.mp3'),
@@ -371,12 +372,16 @@ function gameLoop() {
 
     tickCounter++;
 
-    if (tickCounter % 100 == 0 && hasGameStarted && !hasGameEnded) {
+    if (tickCounter % birdCooldown == 0 && hasGameStarted && !hasGameEnded) {
         let bird = new Bird({ app });
         birds.push(bird);
     }
 
     optimization();    
+
+    if(window.innerWidth < 500){
+        birdCooldown = 120;
+    }
 }
 
 function createBg(texture) {
