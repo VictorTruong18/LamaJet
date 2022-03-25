@@ -30,6 +30,16 @@ let upgrade;
 let replayButton;
 let creditsButton;
 let trueEnding = false;
+let playTheme = true;
+
+var audio = {
+    'music': new Audio('./sounds/Musique.mp3'),
+    'intro' : new Audio('./sounds/IntroLoop.mp3'),
+    'hittingBird' : new Audio('./sounds/HittingBirds.mp3'),
+    'bonnet' : new Audio('./sounds/BonnetSound.mp3'),
+    'jetPack' : new Audio('./sounds/Jetpack.mp3'),
+    'lamaHurt' : new Audio('./sounds/Lama_Hurt.mp3')
+}
 
 // Initialization function triggered on the loading 
 // of the page
@@ -77,7 +87,6 @@ window.onload = function () {
     app.loader.add("replay", "replay.png");
     app.loader.add("credits", "credits.png");
 
-
     // Loading of the app
     // Triggers the function doneLoading at finish
     app.loader.load(doneLoading);
@@ -90,10 +99,15 @@ window.onload = function () {
 }
 
 function clickHandler() {
+    
+    
     if (!hasGameStarted) {
         hasGameStarted = true;
         gameStartText.destroy();
-        console.log('Game has started');
+        audio['music'].loop=true;
+        audio['music'].volume=0.1;
+        audio['music'].play();
+        audio['intro'].pause();
     }
     if (!hasGameEnded) {
         lama.lift();
@@ -105,11 +119,15 @@ function keysDown(e){
         hasGameStarted = true;
         gameStartText.destroy();
         console.log('Game has started');
+        audio['music'].loop=true;
+        audio['music'].volume=0.1;
+        audio['music'].play();
+        audio['intro'].pause();
     }
     if (!hasGameEnded && e.keyCode == 32) {
         lama.lift();
     }
-
+ 
 }
 
 
@@ -122,7 +140,7 @@ function doneLoading() {
     bgFront.position.set(0, window.innerHeight * 0.003);
     app.stage.addChild(bgFront);
 
-
+    
     // Create the Lama Object 
     lama = new Lama({ app });
 
@@ -170,6 +188,7 @@ function doneLoading() {
         window.open(DOWNLOAD_URL, '_blank');
     });
     app.stage.addChild(downloadButton);
+
 
 
     app.ticker.add(gameLoop);
@@ -223,12 +242,21 @@ function resizeScreen() {
     }
 }
 
+function playIntroTheme(){
+    audio['intro'].loop=true;
+    audio['intro'].volume=0.1;
+    audio['intro'].play();
+    playTheme = false;
+    
+}
+
 function gameLoop() {
     app.width = window.innerWidth;
     app.height = window.innerHeight;
     app.renderer.resize(window.innerWidth, window.innerHeight);
 
     updateBackground();
+
 
     resizeScreen();
 
@@ -254,7 +282,8 @@ function gameLoop() {
                 flyingCaps[i].flyingCap.hasCollided = true;
                 flyingCaps[i].flyingCap.x = null;
                 flyingCaps[i].flyingCap.y = 50000;
-                
+                audio['bonnet'].volume=0.1;
+                 audio['bonnet'].play();
                 let cap = new CapWearable(app, lama.lama.x, lama.lama.y, flyingCaps[i].flyingCap.color);
                 caps.push(cap);
             }
@@ -267,7 +296,10 @@ function gameLoop() {
             if (!birds[i].bird.hasCollided) {
                 birds[i].bird.hasCollided = true;
                 lama.stunned();
-                
+                audio['hittingBird'].volume=0.1;
+                audio['hittingBird'].play();
+                audio['lamaHurt'].volume=0.05;
+                audio['lamaHurt'].play();
             }
         }
         let nbHatsCounter = 0;
@@ -278,6 +310,8 @@ function gameLoop() {
                     caps[j].capWearable.hasPopped = true;
                     var lift = Math.floor(Math.random() * 10);
                     caps[j].capWearable.velocity -= lift;
+                    audio['lamaHurt'].volume=0.05;
+                    audio['lamaHurt'].play();
                     
                 }
             }
@@ -295,6 +329,8 @@ function gameLoop() {
         let bird = new Bird({ app });
         birds.push(bird);
     }
+
+    
 }
 
 function createBg(texture) {

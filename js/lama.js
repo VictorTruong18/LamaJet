@@ -108,8 +108,11 @@ class Lama {
             this.lama.velocity -= this.lama.lift;
             this.lama.textures = playerSheet.fly_hat;
             this.lama.play();
+            audio['jetPack'].volume=0.5;
+                audio['jetPack'].play();
         } else {
             this.lama.velocity -= this.lama.lift;
+            
             
         }
         
