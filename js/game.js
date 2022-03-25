@@ -159,7 +159,7 @@ function doneLoading() {
     // Score
     hatCounter = new PIXI.Sprite.from(app.loader.resources['hat_counter'].url);
     hatCounter.x = (window.innerWidth - hatCounter.width) / 2;
-    hatCounter.y = 0;
+    hatCounter.y = -10;
     app.stage.addChild(hatCounter);
 
     scoreText = new PIXI.Text(score, { fontFamily: 'Berlin Sans FB', fontSize: 24, align: 'center' });
