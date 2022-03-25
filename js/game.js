@@ -174,7 +174,7 @@ function doneLoading() {
     appIcon.y = (window.innerHeight - appIcon.height) - 20;
     appIcon.interactive = true;
     appIcon.on('pointerdown', (event) => {
-        window.open(DOWNLOAD_URL, '_blank');
+        window.location.href = DOWNLOAD_URL;
     });
     app.stage.addChild(appIcon);
 
@@ -185,7 +185,7 @@ function doneLoading() {
     downloadButton.y = (window.innerHeight - downloadButton.height) - 20;
     downloadButton.interactive = true;
     downloadButton.on('pointerdown', (event) => {
-        window.open(DOWNLOAD_URL, '_blank');
+        window.location.href = DOWNLOAD_URL;
     });
     app.stage.addChild(downloadButton);
 
@@ -371,7 +371,7 @@ function displayEndScreen() {
     upgrade.y = 30 + appLogo.height + appCredits.height;
     upgrade.interactive = true;
     upgrade.on('pointerdown', (event) => {
-        window.open(DOWNLOAD_URL, '_blank');
+        window.location.href = DOWNLOAD_URL;
     });
 
     replayButton = new PIXI.Sprite.from(app.loader.resources['replay'].url);
@@ -387,7 +387,7 @@ function displayEndScreen() {
     creditsButton.y = 30 + appLogo.height + appCredits.height + upgrade.height;
     creditsButton.interactive = true;
     creditsButton.on('pointerdown', (event) => {
-        window.open('credits.html');
+        window.location.href = "credits.html";
     })
 
     app.stage.addChild(appLogo);
