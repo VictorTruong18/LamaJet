@@ -42,7 +42,9 @@ var audio = {
     'hittingBird': new Audio('./sounds/HittingBirds.mp3'),
     'bonnet': new Audio('./sounds/BonnetSound.mp3'),
     'jetPack': new Audio('./sounds/Jetpack.mp3'),
-    'lamaHurt': new Audio('./sounds/Lama_Hurt.mp3')
+    'lamaHurt': new Audio('./sounds/Lama_Hurt.mp3'),
+    'endMusic' : new Audio('./sounds/EndMusic.mp3'),
+    'endSound' : new Audio('./sounds/EndSound.mp3')
 }
 
 // Initialization function triggered on the loading 
@@ -195,6 +197,8 @@ function doneLoading() {
             audio['bonnet'].volume = 0.1;
             audio['jetPack'].volume = 0.3;
             audio['music'].volume = 0.05;
+            audio['endSound'].volume = 0.2;
+            audio['endMusic'].volume = 0.05;
             muteButton.alpha = 1;
         }
     });
@@ -447,6 +451,15 @@ function optimization(){
 }
 
 function displayEndScreen() {
+    if (!isAudioMute) {
+        audio['endSound'].volume = 0.4;
+        audio['endSound'].play();
+        audio['endMusic'].loop = true;
+        audio['endMusic'].volume = 0.3;
+        audio['endMusic'].play();
+        audio['music'].pause();
+    }
+
     appLogo = new PIXI.Sprite.from(app.loader.resources['logo'].url);
     appLogo.x = (window.innerWidth - appLogo.width) / 2;
     appLogo.y = 25;
