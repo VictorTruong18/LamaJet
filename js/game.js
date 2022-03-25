@@ -332,6 +332,7 @@ function gameLoop() {
         birds.push(bird);
     }
 
+    optimization();
     
 }
 
@@ -351,6 +352,50 @@ function updateBackground() {
         bgMiddle.tilePosition.x = bgX / 2;
         bgBack.tilePosition.x = bgX / 4;
     }
+}
+
+function optimization(){
+    // Flying hats optimization
+    // They are being removed when :
+    // - they have been collided 
+    var indexFlyingHatsGarbage = [];
+    for(let i = 0; i < flyingCaps.length; i++){
+        if(flyingCaps[i].flyingCap.hasCollided){
+            indexFlyingHatsGarbage.push(i);
+        }
+    }
+    for(let i =0; i < indexFlyingHatsGarbage.length; i++){
+        flyingCaps.splice(indexFlyingHatsGarbage[i], 1);
+    }
+    
+    // Flying eagles optimization
+    // They are being removed when :
+    // - they have been collided
+    // - their x is below 0
+    var indexBirdGarbage = [];
+    for(let i = 0; i < birds.length; i++){
+        if(birds[i].bird.hasCollided && birds[i].bird.x < -10000){
+            indexBirdGarbage.push(i);
+        }
+    }
+    for(let i =0; i < indexBirdGarbage.length; i++){
+        birds.splice(indexBirdGarbage[i], 1); 
+    }
+
+    // Wearable hats optimization
+    // They are being removed when :
+    // - They have been popped
+    // - Their y is below 0
+    var indexWearableCaps = [];
+    for(let i = 0; i < caps.length; i++){
+        if(caps[i].capWearable.hasPopped && caps[i].capWearable.y > window.innerHeight + 1000 ){
+            indexWearableCaps.push(i);
+        }
+    }
+    for(let i =0; i < indexWearableCaps.length; i++){
+        caps.splice(indexWearableCaps[i], 1); 
+    }
+
 }
 
 function displayEndScreen() {
