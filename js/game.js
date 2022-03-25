@@ -1,5 +1,5 @@
 // All the objects that need to be accessible from everywhere
-const SCORE_GOAL = 10;
+const SCORE_GOAL = 1;
 const DOWNLOAD_URL = "https://en.wikipedia.org/wiki/Llama";
 const CREDITS_URL = "https://epita.fr";
 let lama;
@@ -297,7 +297,7 @@ function resizeScreen() {
         }
         if (hasGameEnded) {
             appLogo.x = (window.innerWidth - appLogo.width) / 2;
-            appLogo.y = 25;
+            appLogo.y = 20;
             appCredits.x = (window.innerWidth - appCredits.width) / 2;
             appCredits.y = 30 + appLogo.height;
             upgrade.x = (window.innerWidth - upgrade.width) / 2;
@@ -481,7 +481,7 @@ function displayEndScreen() {
 
     appLogo = new PIXI.Sprite.from(app.loader.resources['logo'].url);
     appLogo.x = (window.innerWidth - appLogo.width) / 2;
-    appLogo.y = 25;
+    appLogo.y = 20;
     appLogo.interactive = true;
     appLogo.on('pointerdown', (event) => {
         window.open(DOWNLOAD_URL, '_blank');
@@ -494,10 +494,7 @@ function displayEndScreen() {
     upgrade = new PIXI.Sprite.from(app.loader.resources['upgrade'].url);
     upgrade.x = (window.innerWidth - upgrade.width) / 2;
     upgrade.y = 30 + appLogo.height + appCredits.height;
-    upgrade.interactive = true;
-    upgrade.on('pointerdown', (event) => {
-        window.location.href = DOWNLOAD_URL;
-    });
+    
 
     replayButton = new PIXI.Sprite.from(app.loader.resources['replay'].url);
     replayButton.x = (window.innerWidth - replayButton.width) / 2 - 80;
