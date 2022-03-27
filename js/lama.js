@@ -6,7 +6,7 @@ let floor = window.innerHeight * 0.8;
 // Physics
 const orginGravity = 0.1;
 const originVelocity = 0;
-const lift = 5;
+const lift = 2;
 const playerSheet = {};
 
 

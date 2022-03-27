@@ -2,7 +2,7 @@
 // Positioning
 let birdOrginX = window.innerWidth;
 let birdOrginY = window.innerHeight;
-const birdSpeed = 3;
+const birdSpeed = 4;
 
 
 class Bird {

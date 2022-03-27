@@ -1,5 +1,5 @@
 // All the objects that need to be accessible from everywhere
-const SCORE_GOAL = 1;
+const SCORE_GOAL = 10;
 const DOWNLOAD_URL = "https://en.wikipedia.org/wiki/Llama";
 const CREDITS_URL = "https://epita.fr";
 let lama;
